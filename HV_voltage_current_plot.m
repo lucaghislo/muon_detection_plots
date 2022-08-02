@@ -6,7 +6,7 @@ for i = 1:length(index_interpreter)
     set(groot, default_name,'latex');
 end
 
-data = readtable('HV_voltage_current.dat');
+data = readtable('input/HV_voltage_current_Tamb.dat');
 
 plot(data.voltage, data.current)
 
@@ -15,4 +15,4 @@ grid on
 xlabel('Sensors biasing voltage [V]')
 ylabel('Leakage Current [$\mu$A]')
 
-exportgraphics(gcf, 'HK_current.pdf', 'ContentType', 'vector');
+exportgraphics(gcf, 'output/HK_current_Tamb.pdf', 'ContentType', 'vector');
