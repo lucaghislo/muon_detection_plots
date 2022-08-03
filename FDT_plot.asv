@@ -104,7 +104,7 @@ for pt = 0:7
     peaking_times(pt+1, 1) = strcat("$\tau_{", num2str(pt), '}$ = ', " ", num2str(peaking_times_values(pt+1), '%.2f'), ' $\mu$s');
 end
 
-legend(peaking_times, 'Location', 'southeast', 'Box','off')
+legend(peaking_times, 'Location', 'southeast')
 xlabel('Incoming energy [MeV]');
 ylabel('Channel\_out [ADC code]');
 xlim([0, 53824]);
