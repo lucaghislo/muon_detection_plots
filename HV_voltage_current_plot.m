@@ -27,3 +27,21 @@ ax = gca;
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
 exportgraphics(gcf, 'output/HK_current_Tamb.pdf', 'ContentType', 'vector');
+
+
+%% MODULO A -40C
+
+data = readtable('input/HV_voltage_current_40C.dat');
+
+f = figure('Visible', 'on');
+scatter(data.voltage, data.current, '')
+
+box on
+grid on
+xlabel('Bias voltage [V]')
+ylabel('Leakage Current [nA]')
+
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+exportgraphics(gcf, 'output/HK_current_40C.pdf', 'ContentType', 'vector');
