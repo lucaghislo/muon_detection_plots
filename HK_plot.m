@@ -16,14 +16,14 @@ end
 clear; clc;
 fontsize = 12;
 
-leakage_measures = nan(31, 26);
+leakage_measures = nan(32, 26);
 
 counter = 1;
 for voltage = 0:10:250
-    for channel = 1:31
+    for channel = 0:31
         data = readtable(['input/HK_test_03082022/HK_', num2str(voltage), '/data/HK_Leakage_ch', num2str(channel),'.dat']);
         ch_mean = mean(data.Value);
-        leakage_measures(channel, counter) = round(ch_mean);
+        leakage_measures(channel+1, counter) = round(ch_mean);
     end
     counter = counter + 1;
 end
@@ -48,9 +48,9 @@ for i = 1:size(leakage_measures_I, 1)
 end
 hold off
 
-channels = strings(31, 1);
-for ch = 1:31
-    channels(ch, 1) = strcat("Ch \#", num2str(ch));
+channels = strings(32, 1);
+for ch = 0:31
+    channels(ch+1, 1) = strcat("Ch \#", num2str(ch));
 end
 
 legend(channels, 'NumColumns', 2, 'Location','eastoutside')
