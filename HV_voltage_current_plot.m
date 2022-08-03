@@ -1,4 +1,9 @@
-% This script changes all interpreters from tex to latex. 
+%% LEAKAGE CURRENT PLOT
+
+clear; clc;
+
+fontsize = 12;
+
 list_factory = fieldnames(get(groot,'factory'));
 index_interpreter = find(contains(list_factory,'Interpreter'));
 for i = 1:length(index_interpreter)
@@ -6,13 +11,19 @@ for i = 1:length(index_interpreter)
     set(groot, default_name,'latex');
 end
 
+%% MODULO A TEMPERATURA AMBIENTE
+
 data = readtable('input/HV_voltage_current_Tamb.dat');
 
-plot(data.voltage, data.current)
+f = figure('Visible', 'on');
+scatter(data.voltage, data.current, '')
 
 box on
 grid on
-xlabel('Sensors biasing voltage [V]')
+xlabel('Bias voltage [V]')
 ylabel('Leakage Current [$\mu$A]')
 
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
 exportgraphics(gcf, 'output/HK_current_Tamb.pdf', 'ContentType', 'vector');
