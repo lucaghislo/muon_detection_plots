@@ -44,7 +44,7 @@ colors = distinguishable_colors(32, 'w');
 f = figure('Visible', 'on');
 hold on
 for i = 1:size(leakage_measures_I, 1)
-    semilogy([0:-10:-250], leakage_measures_I(i, :), 'Color', [colors(i, 1), colors(i, 2), colors(i, 3)]);
+    semilogy([0:-10:-250], leakage_measures_I(i, :), 'Marker','o', 'MarkerSize', 2, 'Color', [colors(i, 1), colors(i, 2), colors(i, 3)], 'MarkerFaceColor', [colors(i, 1), colors(i, 2), colors(i, 3)]);
 end
 hold off
 
