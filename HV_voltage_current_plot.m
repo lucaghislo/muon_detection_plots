@@ -34,12 +34,12 @@ exportgraphics(gcf, 'output/HK_current_Tamb.pdf', 'ContentType', 'vector');
 data = readtable('input/HV_voltage_current_40C.dat');
 
 f = figure('Visible', 'on');
-scatter(data.voltage, data.current, '')
+scatter(data.voltage, flip(data.current), '')
 
 box on
 grid on
 xlabel('Bias voltage [V]')
-ylabel('Leakage Current [nA]')
+ylabel('Leakage Current [$\mu$A]')
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
