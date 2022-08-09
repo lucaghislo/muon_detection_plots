@@ -61,7 +61,7 @@ xticks([-250:25:0])
 xlabel('Bias voltage [V]')
 ylabel('Leakage current [nA]')
 set(gca, 'YScale', 'log')
-axis([-250 0 0 20])
+axis([-250 0 0.05 25])
 yticks([0.1 0.2 0.3 0.4 0.5 1 2 3 4 5 10 15 20])
 
 ax = gca; 
@@ -82,11 +82,13 @@ box on
 xlabel('Bias voltage [V]')
 ylabel('Total leakage current [nA]')
 xticks([-250:25:0])
-yticks([0:50:500])
+yticks([100:50:500])
 %ylim([0 500])
 %set(gca, 'YLim', [-100, 500]);
-axis([-250 0 -100 500])
+axis([-250 0 80 500])
 set(gca, 'YScale', 'log')
+set(gca,'YMinorTick','off')
+set(gca,'YMinorGrid','off')
 
 fontsize = 12;
 ax = gca; 
