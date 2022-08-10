@@ -28,10 +28,20 @@ for voltage = 0:10:250
     counter = counter + 1;
 end
 
+% Calcolo offset per canale
+offset_ch = nan(32,1);
+for channel = 0:31
+    data_offset = readtable(['input/HK_test_03082022/HK_NO/data/HK_Leakage_ch', num2str(channel) ,'.dat'])
+    offset_mean = round(mean(data_offset.Value));
+    offset_ch(channel+1, 1) = offset_mean;
+end
+
+
 voltage_coeff = 1.76;
 den_coeff = 3.87;
-R = 1.99*10^6; % H = 0
-leakage_measures_I = abs(((1024 - leakage_measures) * voltage_coeff)/(den_coeff * 10 * R));
+R = 223.7 * 10 ^ 3; % 1.99 * 10 ^ 6; % H = 0
+leakage_measures_I = abs(((1024 - (leakage_measures - offset_ch)) * voltage_coeff)/(den_coeff * 10 * R));
+
 leakage_measures_I = leakage_measures_I * 1000; % mA -> uA
 leakage_measures_I = leakage_measures_I * 1000; % uA -> nA
 
@@ -44,7 +54,7 @@ colors = distinguishable_colors(32, 'w');
 f = figure('Visible', 'on');
 hold on
 for i = 1:size(leakage_measures_I, 1)
-    semilogy([0:-10:-250], leakage_measures_I(i, :), 'Marker','o', 'MarkerSize', 2, 'Color', [colors(i, 1), colors(i, 2), colors(i, 3)], 'MarkerFaceColor', [colors(i, 1), colors(i, 2), colors(i, 3)]);
+    plot([0:-10:-250], leakage_measures_I(i, :), 'Marker','o', 'MarkerSize', 2, 'Color', [colors(i, 1), colors(i, 2), colors(i, 3)], 'MarkerFaceColor', [colors(i, 1), colors(i, 2), colors(i, 3)]);
 end
 hold off
 
@@ -53,16 +63,16 @@ for ch = 0:31
     channels(ch+1, 1) = strcat("Ch \#", num2str(ch));
 end
 
-legend(channels, 'NumColumns', 2, 'Location','eastoutside')
-grid on
-box on
-%ylim([0 20])
-xticks([-250:25:0])
-xlabel('Bias voltage [V]')
-ylabel('Leakage current [nA]')
-set(gca, 'YScale', 'log')
-axis([-250 0 0.05 25])
-yticks([0.1 0.2 0.3 0.4 0.5 1 2 3 4 5 10 15 20])
+% legend(channels, 'NumColumns', 2, 'Location','eastoutside')
+% grid on
+% box on
+% %ylim([0 20])
+% %xticks([-250:25:0])
+% xlabel('Bias voltage [V]')
+% ylabel('Leakage current [nA]')
+% set(gca, 'YScale', 'log')
+% axis([-250 0 0.5 300])
+% yticks([0.1 0.2 0.3 0.4 0.5 1 2 3 4 5 10 50 100 200 300])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
@@ -77,18 +87,18 @@ exportgraphics(gcf,'output/leakage_current.pdf','ContentType','vector');
 f = figure('Visible', 'on')
 semilogy([0:-10:-250], sum(leakage_measures_I), 'LineWidth', 1, 'Marker','o', 'MarkerSize',4, 'MarkerFaceColor', '0.00,0.45,0.74')
 
-grid on
-box on
-xlabel('Bias voltage [V]')
-ylabel('Total leakage current [nA]')
-xticks([-250:25:0])
-yticks([100:50:500])
-%ylim([0 500])
-%set(gca, 'YLim', [-100, 500]);
-axis([-250 0 80 500])
-set(gca, 'YScale', 'log')
-set(gca,'YMinorTick','off')
-set(gca,'YMinorGrid','off')
+% grid on
+% box on
+% xlabel('Bias voltage [V]')
+% ylabel('Total leakage current [nA]')
+% xticks([-250:25:0])
+% %yticks([100:50:500])
+% %ylim([0 500])
+% %set(gca, 'YLim', [-100, 500]);
+% %axis([-250 0 80 500])
+% set(gca, 'YScale', 'log')
+% set(gca,'YMinorTick','off')
+% set(gca,'YMinorGrid','off')
 
 fontsize = 12;
 ax = gca; 
