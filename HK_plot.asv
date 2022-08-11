@@ -210,20 +210,4 @@ R = 223.7 * 10 ^ 3; % CORRETTO
 leak_curr_I = abs(((1024 - leak_curr_ADC) * voltage_coeff)/(den_coeff * 10 * R));
 %leak_curr_I = leak_curr_I .* 1000; % uA to nA    
 
-hold on
 plot([1:32], leak_curr_I)
-
-% Fit line to data using polyfit
-c = polyfit([1:15],leak_curr_I(1:15),1);
-mdl = fitlm([1:15],leak_curr_I(1:15))
-
-% Display evaluated equation y = p0 + p1*x
-disp(['Equation is y = ' num2str(c(2)) ' + ' num2str(c(1)) '*x, R = ' num2str(corrcoef(leak_curr_I))])
-
-% Evaluate fit equation using polyval
-y_est = polyval(c, [1:15]);
-
-% Add trend line to plot
-plot([1:15],y_est,'r--','LineWidth',1)
-
-hold off
