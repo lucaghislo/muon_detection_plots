@@ -16,7 +16,7 @@ end
 %% PLOT
 
 f = figure('Visible', 'off');
-tiledlayout('flow')
+iledlayout('flow')
 colors = distinguishable_colors(2, 'w');
 
 for ch = 0:31
@@ -24,7 +24,7 @@ for ch = 0:31
     data1 = readtable("input\muons\Run_10_08_2022_13.07.48_1hr_self.txt");
     
     % external trigger delay 44
-    data2 = readtable("input\muons\Run_10_08_2022_13.07.48_1hr_self.txt");
+    data2 = readtable("input\muons\Run_11_08_2022_11.29.16_1hr_ext_49.txt");
     
     nexttile
     %h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1);
@@ -53,7 +53,7 @@ for ch = 0:31
    
 end
 
-exportgraphics(gcf,'output/incoming_energy_32channels_self.pdf','ContentType','vector');
+exportgraphics(gcf,'output/incoming_energy_32channels_49.pdf','ContentType','vector');
 
 
 %% PROFILE W/ COMPARISON NAPOLI e MIT
