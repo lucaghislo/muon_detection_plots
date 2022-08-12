@@ -43,7 +43,7 @@ for ch = 0:31
     set(gca, 'YScale', 'log')
     set(gca,'YMinorGrid','on')
     set(gca,'YGrid','on')
-    xlim([0 1000])
+    xlim([0 2000])
     ylim([1 1000])
     xlabel('Energy [ADU]')
     ylabel('Counts')
@@ -198,24 +198,24 @@ exportgraphics(gcf,'output/incoming_energy_zero_suppr.pdf','ContentType','vector
 
 %% PROFILE W/ NOISE SUPPRESSION (THR = 130)
 
-%data1 = readtable('input/muons/Run_10_08_2022_13.07.48_1hr_self.txt');
+data1 = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_self_130.txt');
 data_noise_suppr = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_self_130_ZS.txt');
 colors = distinguishable_colors(2, 'w');
 
 f = figure('Visible', 'on');
 hold on
-%dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
 dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
-%h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
 h2 = histogram(data_noise_suppr.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
-histfitlandau(data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5),3,0,1500)
+%histfitlandau(data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5),3,0,1500)
 
 hold off
 
 box on
 grid on
-%legend([dummy1 dummy2], "Without zero suppression", " With zero suppression")
-%set(gca, 'YScale', 'log')
+legend([dummy1 dummy2], "Without zero suppression", " With zero suppression")
+set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
 xlim([0 2000])
@@ -228,7 +228,7 @@ ax.XAxis.FontSize = fontsize;
 ax.YAxis.FontSize = fontsize; 
 %ax.Legend.FontSize = fontsize;
 f.Position = [200 160 900  550];
-exportgraphics(gcf,'output/incoming_energy_zero_suppr_thr130_landau.pdf','ContentType','vector');
+exportgraphics(gcf,'output/incoming_energy_thr130_ZS_comparativa.pdf','ContentType','vector');
 %exportgraphics(gcf,'output/incoming_energy_zero_suppr_thr130_landau.png');
 
 
