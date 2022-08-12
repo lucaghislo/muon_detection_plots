@@ -307,7 +307,7 @@ f = figure('Visible', 'on');
 colors = distinguishable_colors(8, 'w');
 
 hold on
-for pt = 0:4
+for pt = 0:7
     for ch = 0:31
         counter = 1;
         for i = 1:size(data, 1)
@@ -351,32 +351,9 @@ ax.Legend.FontSize = fontsize;
 exportgraphics(gcf,'output/FDT_MODULE_40C_250V_allpt.pdf','ContentType','vector');
 
 
-%% CALCOLO GUADAGNO IN BASSA ENERGIA PT4 (per singolo canale)
+%% CALCOLO GUADAGNO IN BASSA ENERGIA PT4
 
-clearvars -except ch_out X
 
-x = X(2:11);
-%y_all = mean(ch_out, 2);
-y_all = ch_out
-y_211 = y_all(2:11, :)
-
-gains = nan(32, 1);
-
-f = figure('Visible', 'on');
-hold on
-for ch = 1:32
-    y = y_211(:, ch);
-    plot(x, y)
-
-    % Fit line to data using polyfit
-    c = polyfit(x,y,1);
-    mdl = fitlm(x,y)
-    
-    % Display evaluated equation y = p0 + p1*x
-    disp(['Equation is y = ' num2str(c(2)) ' + ' num2str(c(1)) '*x, R = ' num2str(corrcoef(y))])
-    gains(ch) = c(1);
-end
-hold off
 
 
 %% MODULO a -40C con sensori a 0V
