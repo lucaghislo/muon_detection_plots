@@ -41,6 +41,9 @@ if nargin>2;
     end;
     y(1:inz(end))=0;
 end;
+
+colors = distinguishable_colors(2, 'w');
+
 a0=max(y);
 mpv0=min(x(find(y==a0)));
 sigma0=std(val);
@@ -49,7 +52,7 @@ fitres=fit(x,y,ftype,'StartPoint',[a0 mpv0 sigma0]);
 bound=confint(fitres);
 xfit=x(1):(passo/10):x(end);
 yfit=fitres(xfit);
-line(xfit,yfit,'LineWidth',2,'LineStyle','-','Color','r');
+line(xfit,yfit,'LineWidth',1,'LineStyle','-','Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
 picco=max(yfit);
 mpv=xfit(find(yfit==picco));
 mpv=mpv(end);

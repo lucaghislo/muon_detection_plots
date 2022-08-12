@@ -1,5 +1,7 @@
 function [h,intervalli]=hist_(x,passo,mi,mx,n,noplot,shift)
 set(gca,'Fontsize',16)
+colors = distinguishable_colors(2, 'w');
+
 if(nargin==1)
     passo=(max(x)-min(x))/calcnbins(x);
     mi=min(x);
@@ -77,7 +79,7 @@ if shift
 end
 % bar(intervalli,h);
 if (noplot==0)
-    stairs(intervalli,h,'k','LineWidth',2);
+    stairs(intervalli,h,'k','LineWidth',1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)], 'LineWidth',1);
 end;
 if nargout
     h=h(:);
