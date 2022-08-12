@@ -73,22 +73,24 @@ for ch = 0:31
     nexttile
     hold on
     data = data_table.Energy_ADC_(data_table.Channel == ch);
+    data = data(data<200)
     plot_m = histogram(data, 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)])
     dummy = plot(nan, nan, 'LineWidth', 0.7, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
 
-    noise_data = data(data<200);
+    noise_data = data;
     dist = fitdist(noise_data, "normal")
     
     bin_w = 1;
-    scale = 15;
+    scale = 5;
     
     pd = fitdist(noise_data,'Normal')
-    x_values = [(plot_m.BinEdges(1)):0.01:(plot_m.BinEdges(20))];
-    pdf_data = pdf(pd, x_values) * trapz(plot_m.Values(1:20)) * scale;
+    x_values = [(plot_m.BinEdges(1)):0.01:(plot_m.BinEdges(end)+50)];
+    pdf_data = pdf(pd, x_values) * trapz(plot_m.Values) * scale;
     plot_normale = plot(x_values, pdf_data, 'LineWidth', 0.7, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)])
+
     set(gca, 'YScale', 'linear')
-    xlim([0 2000])
-    ylim([1 1400])
+    xlim([0 250])
+    ylim([1 600])
     xlabel('Energy [ADU]')
     ylabel('Counts')
     
@@ -100,7 +102,9 @@ for ch = 0:31
     box on
     grid on
     title("Channel " + num2str(ch))
-    legend([plot_normale], ["$\mu$ = " + " " + num2str(round(dist.mu, 2)) + " ADU, $\sigma$ = " + " " + num2str(round(dist.sigma, 2)) + " ADU"])
+    legend([plot_normale], {"$\mu$ = " + " " + num2str(round(dist.mu, 2)) + " ADU" + newline + "$\sigma$ = " + " " + ...
+        num2str(round(dist.sigma, 2)) + " ADU" + newline + "ENC = " + num2str(round(ENC, 2)) + " ADU"}, 'location', 'northeast')
+    %annotation('textbox', [0.5, 0.2, 0.1, 0.1], 'String', ["$\mu$ = " + " " + num2str(round(dist.mu, 2)) + " ADU, $\sigma$ = " + " " + num2str(round(dist.sigma, 2)) + " ADU"])
 
     hold off
 end
@@ -206,7 +210,7 @@ f = figure('Visible', 'on');
 hold on
 dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
 dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
-h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'BinWidth', 10, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
 h2 = histogram(data_noise_suppr.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
 %histfitlandau(data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5),3,0,1500)
 
