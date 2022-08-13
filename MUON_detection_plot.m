@@ -16,7 +16,7 @@ end
 %% PLOT
 
 f = figure('Visible', 'off');
-tiledlayout(4, 8)
+%tiledlayout(4, 8)
 colors = distinguishable_colors(2, 'w');
 
 for ch = 0:31
@@ -26,39 +26,44 @@ for ch = 0:31
     % external trigger delay 44
     data2 = readtable("input\muons\Run_11_08_2022_11.29.16_2hr_ext_34.txt");
     
-    nexttile
+    %nexttile
     %h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1);
 
     if ch>15 && ch<24
-        h2 = histogram(data2.Energy_ADC_(data2.Channel==ch), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+        h2 = histogram(data2.Energy_ADC_(data2.Channel==ch), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 5, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
     else
-        h2 = histogram(data2.Energy_ADC_(data2.Channel==ch), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+        h2 = histogram(data2.Energy_ADC_(data2.Channel==ch), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 5, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
     end
     %h3 = histogram(data2.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'BinWidth', 10);
     
     box on
     grid on
-    title(['Channel ', num2str(ch)])
+    title(['\textbf{Channel ', num2str(ch),'}'])
     %legend(['Ch = ', num2str(ch), ''])
     set(gca, 'YScale', 'log')
     set(gca,'YMinorGrid','on')
     set(gca,'YGrid','on')
     xlim([0 2000])
     ylim([1 1000])
-    xlabel('Energy [ADU]')
-    ylabel('Counts')
+    %xlabel('Energy [ADU]')
+    %ylabel('Counts')
     
-%     ax = gca; 
-%     ax.XAxis.FontSize = fontsize; 
-%     ax.YAxis.FontSize = fontsize; 
-     f.Position = [0 0 2160 4096*10];
+    ax = gca; 
+    ax.XAxis.FontSize = fontsize; 
+    ax.YAxis.FontSize = fontsize; 
+     %f.Position = [0 0 2160 4096*10];
+
+     exportgraphics(gcf,['output/incoming_energy_32channels_34_2hr_', num2str(ch),'.pdf'],'ContentType','vector');
+
    
 end
 
-exportgraphics(gcf,'output/incoming_energy_32channels_34_2hr.pdf','ContentType','vector');
+%exportgraphics(gcf,'output/incoming_energy_32channels_34_2hr.pdf','ContentType','vector');
 
 
 %% PLOT TUTTI I CANALI e GAUSSIANA NOISE
+
+fontsize = 12;
 
 % self trigger 1hr
 data_table = readtable("input\muons\Run_10_08_2022_13.07.48_1hr_self.txt");
@@ -109,6 +114,9 @@ for ch = 0:31
     hold off
 end
 
+% ax = gca; 
+% ax.XAxis.FontSize = fontsize; 
+% ax.YAxis.FontSize = fontsize; 
 f.Position = [0 0 2160*3 4096*3];
 exportgraphics(gcf,'output/incoming_energy_32channels_gaussiana_self.pdf','ContentType','vector');
 
@@ -116,6 +124,7 @@ exportgraphics(gcf,'output/incoming_energy_32channels_gaussiana_self.pdf','Conte
 %% PLOT ENC
 
 f = figure('Visible','on')
+fontsize = 12;
 
 hold on
 plot([0:31], ENC_channels.*0.841, 'LineWidth', 1, 'Marker','o', 'MarkerSize',4, 'MarkerFaceColor', '0.00,0.45,0.74')
@@ -128,10 +137,14 @@ hold off
 
 box on
 grid on
-xlabel("Channel")
+xlabel("Channels")
 ylabel("FWHM ENC [keV]")
 
-exportgraphics(gcf,'output/ENC_channels_ext_trigger.pdf','ContentType','vector');
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+
+exportgraphics(gcf,'output/ENC_channels_self.pdf','ContentType','vector');
 
 
 %% PROFILE W/ COMPARISON NAPOLI e MIT
@@ -142,10 +155,10 @@ colors = distinguishable_colors(3, 'w');
 
 f = figure('Visible', 'on');
 hold on
-dummy = plot_m(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+dummy = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
 h = histogram(data.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-p1 = plot_m(data_MIT_NA.Var1, data_MIT_NA.Var2, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
-p2 = plot_m(data_MIT_NA.Var3, data_MIT_NA.Var4, 'LineWidth', 1, 'Color', [colors(3, 1), colors(3, 2), colors(3, 3)]);
+p1 = plot(data_MIT_NA.Var1, data_MIT_NA.Var2, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+p2 = plot(data_MIT_NA.Var3, data_MIT_NA.Var4, 'LineWidth', 1, 'Color', [colors(3, 1), colors(3, 2), colors(3, 3)]);
 hold off
 
 box on
@@ -155,7 +168,7 @@ set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
 xlim([0 2000])
-xlabel('Energy [ADC]')
+xlabel('Energy [ADU]')
 ylabel('Counts')
 
 ax = gca; 

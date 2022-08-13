@@ -1,4 +1,4 @@
-%% FDT PLOT
+    %% FDT PLOT
 
 clear; clc;
 
@@ -307,7 +307,7 @@ f = figure('Visible', 'on');
 colors = distinguishable_colors(8, 'w');
 
 hold on
-for pt = 0:4
+for pt = 0:7
     for ch = 0:31
         counter = 1;
         for i = 1:size(data, 1)
@@ -330,7 +330,7 @@ for pt = 0:7
     peaking_times(pt+1, 1) = strcat("$\tau_{", num2str(pt), '}$ = ', " ", num2str(peaking_times_values(pt+1), '%.2f'), ' $\mu$s');
 end
 
-legend(peaking_times, 'Location', 'southeast')
+legend(peaking_times, 'Location', 'eastoutside')
 xlabel('Incoming energy [MeV]');
 ylabel('Channel\_out [ADC code]');
 xlim([0, 53824]);
@@ -347,7 +347,7 @@ ax = gca;
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
 ax.Legend.FontSize = fontsize; 
-%f.Position = [200 160 900  550];
+f.Position = [200 160 900  550];
 exportgraphics(gcf,'output/FDT_MODULE_40C_250V_allpt.pdf','ContentType','vector');
 
 
