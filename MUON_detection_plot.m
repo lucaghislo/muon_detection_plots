@@ -30,10 +30,11 @@ for ch = 0:31
     %h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1);
 
     if ch>15 && ch<24
-        h2 = histogram(data2.Energy_ADC_(data2.Channel==ch), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 5, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+        h2 = histogram(data2.Energy_ADC_(data2.Channel==ch), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
     else
-        h2 = histogram(data2.Energy_ADC_(data2.Channel==ch), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 5, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+        h2 = histogram(data2.Energy_ADC_(data2.Channel==ch), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
     end
+
     %h3 = histogram(data2.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'BinWidth', 10);
     
     box on
@@ -43,7 +44,7 @@ for ch = 0:31
     set(gca, 'YScale', 'log')
     set(gca,'YMinorGrid','on')
     set(gca,'YGrid','on')
-    xlim([0 2000])
+    xlim([0 1000])
     ylim([1 1000])
     %xlabel('Energy [ADU]')
     %ylabel('Counts')
@@ -51,11 +52,9 @@ for ch = 0:31
     ax = gca; 
     ax.XAxis.FontSize = fontsize; 
     ax.YAxis.FontSize = fontsize; 
-     %f.Position = [0 0 2160 4096*10];
+    %f.Position = [0 0 2160 4096*10];
 
-     exportgraphics(gcf,['output/incoming_energy_32channels_34_2hr_', num2str(ch),'.pdf'],'ContentType','vector');
-
-   
+    exportgraphics(gcf,['output/incoming_energy_32channels_34_2hr_', num2str(ch),'.pdf'],'ContentType','vector');
 end
 
 %exportgraphics(gcf,'output/incoming_energy_32channels_34_2hr.pdf','ContentType','vector');
@@ -168,8 +167,10 @@ set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
 xlim([0 2000])
+ylim([0.9 100000    ])
 xlabel('Energy [ADU]')
 ylabel('Counts')
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$"])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
@@ -249,41 +250,43 @@ exportgraphics(gcf,'output/incoming_energy_thr130_ZS_comparativa.pdf','ContentTy
 %exportgraphics(gcf,'output/incoming_energy_zero_suppr_thr130_landau.png');
 
 
-%% PROFILE W/ NOISE SUPPRESSION (THR = 150)
+%% PROFILE W/ NOISE SUPPRESSION (THR = 130, 150)
 
-%data1 = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_self_130.txt');
-data_noise_suppr = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_self_150_ZS.txt');
-colors = distinguishable_colors(2, 'w');
+data1 = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_self_130.txt');
+%data_noise_suppr = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_self_150_ZS.txt');
+data_noise_suppr = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_self_130_ZS.txt');
+colors = distinguishable_colors(4, 'w');
 
 f = figure('Visible', 'on');
 hold on
-%dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-%h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'BinWidth', 10, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-h2 = histogram(data_noise_suppr.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-histfitlandau(data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5),5,0,2000)
+dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'BinWidth', 10, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+h2 = histogram(data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5), 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+%histfitlandau(data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5),10,0,1500)
 
 hold off
 
 box on
 grid on
-%legend([dummy1 dummy2], "Without zero suppression", " With zero suppression")
-%set(gca, 'YScale', 'log')
+legend([dummy1 dummy2], "Without zero suppression", " With zero suppression")
+set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
 xlim([0 2000])
 %ylim([0.5 10000])
-%ylim([0.8 10000])
+ylim([0.9 100000])
 xlabel('Energy [ADU]')
 ylabel('Counts')
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$"])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
-%ax.Legend.FontSize = fontsize;
+ax.Legend.FontSize = fontsize;
 f.Position = [200 160 900  550];
-exportgraphics(gcf,'output/incoming_energy_thr150_ZS_landau.pdf','ContentType','vector');
-%exportgraphics(gcf,'output/incoming_energy_zero_suppr_thr130_landau.png');
+%exportgraphics(gcf,'output/incoming_energy_thr130_ZS_landau.pdf','ContentType','vector');
+exportgraphics(gcf,'output/incoming_energy_zero_suppr_thr130.pdf','ContentType','vector');
 
 
 
@@ -339,35 +342,37 @@ exportgraphics(gcf,'output/incoming_energy_different_delays.pdf','ContentType','
 fontsize = 12;
 
 % external trigger delay 39
-data1 = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_ext_34.txt');
-data2 = readtable('input/muons/Run_10_08_2022_13.07.48_1hr_self.txt');
+%data1 = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_ext_34.txt');
+data2 = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_self_130.txt');
 data3 = readtable('input/muons/Run_11_08_2022_11.29.16_2hr_ext_34.txt');
-colors = distinguishable_colors(3, 'w');
+colors = distinguishable_colors(7, 'w');
 
 f = figure('Visible', 'on');
 hold on
-dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-dummy3 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(3, 1), colors(3, 2), colors(3, 3)]);
-dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
-h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-h3 = histogram(data3.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 5,'LineWidth', 1, 'EdgeColor', [colors(3, 1), colors(3, 2), colors(3, 3)]);
-h2 = histogram(data2.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 5,'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+%dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+dummy3 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(5, 1), colors(5, 2), colors(5, 3)]);
+dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+%h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+h3 = histogram(data3.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(5, 1), colors(5, 2), colors(5, 3)]);
+h2 = histogram(data2.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
 hold off
 
 box on
 grid on
-legend([dummy1 dummy3 dummy2], "External Trigger, delay: 34 FPGA Clocks (1)", "External Trigger, delay: 34 FPGA Clocks (2)", "Self trigger")
+%legend([dummy1 dummy3 dummy2], "External Trigger, delay: 34 FPGA Clocks (1)", "External Trigger, delay: 34 FPGA Clocks (2)", "Self trigger")
+legend([dummy3 dummy2], "External Trigger", "Self trigger")
 set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
 xlim([0 2000])
-ylim([0.8 10000])
-xlabel('Energy [ADC]')
+ylim([0.9 100000])
+xlabel('Energy [ADU]')
 ylabel('Counts')
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$"])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
 ax.Legend.FontSize = fontsize;
 f.Position = [200 160 900  550];
-exportgraphics(gcf,'output/incoming_energy_ext34_self_comparison.pdf','ContentType','vector');
+exportgraphics(gcf,'output/incoming_energy_external34_self_100.pdf','ContentType','vector');

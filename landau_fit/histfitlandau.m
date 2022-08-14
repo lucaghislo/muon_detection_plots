@@ -21,7 +21,13 @@ function [vpp,sig,mv,bound]=histfitlandau(val,passo,inizio,fine)
 % x(1001:2000)=randn(1,1000).*4+2;
 % [vpp,sig,mv,bound]=histfitlandau(x,0.3,-3,15);
 
-
+% This script changes all interpreters from tex to latex. 
+list_factory = fieldnames(get(groot,'factory'));
+index_interpreter = find(contains(list_factory,'Interpreter'));
+for i = 1:length(index_interpreter)
+    default_name = strrep(list_factory{index_interpreter(i)},'factory','default');
+    set(groot, default_name,'latex');
+end
 
 clf;
 if(nargin==1)
@@ -42,7 +48,7 @@ if nargin>2;
     y(1:inz(end))=0;
 end;
 
-colors = distinguishable_colors(2, 'w');
+colors = distinguishable_colors(4, 'w');
 
 a0=max(y);
 mpv0=min(x(find(y==a0)));
@@ -52,7 +58,7 @@ fitres=fit(x,y,ftype,'StartPoint',[a0 mpv0 sigma0]);
 bound=confint(fitres);
 xfit=x(1):(passo/10):x(end);
 yfit=fitres(xfit);
-line(xfit,yfit,'LineWidth',1,'LineStyle','-','Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+line(xfit,yfit,'LineWidth',1,'LineStyle','-','Color', [colors(3, 1), colors(3, 2), colors(3, 3)]);
 picco=max(yfit);
 mpv=xfit(find(yfit==picco));
 mpv=mpv(end);
@@ -61,9 +67,9 @@ errMPV=mean(abs(bound(:,2)-mpv));
 errSig=mean(abs(bound(:,3)-fitres.sigma));
 %line([mpv mpv],[0 picco],'LineWidth',2,'LineStyle','--','Color','r');
 %text(mpv,0,[' \leftarrow' num2str(mpv)],'rotation',-90,'FontSize',12');
-testo={['MPV: ', num2str(mpv), '\pm', num2str(errMPV), ];['\sigma = ', num2str(fitres.sigma),'\pm', num2str(errSig),];['Entries: ' num2str(length(val))]};
-%testo={['MPV: ', num2str(mpv) ];['\sigma = ', num2str(fitres.sigma)];['Entries: ' num2str(length(val))]};
-%annotation('textbox',[.61 .8 .1 .1],'FitHeightToText','on','Interpreter','tex','String',testo,'FontName','Century Gothic','Fontsize',18);
+testo={['MPV: ', num2str(mpv), '\newline', num2str(errMPV), ];['$\sigma$ = ', num2str(fitres.sigma),'\pm', num2str(errSig),];['Entries: ' num2str(length(val))]};
+testo={['MPV: ', num2str(mpv), ' ADU'];['$\sigma$ = ', num2str(fitres.sigma), ' ADU'];['Entries: ' num2str(length(val))]};
+annotation('textbox',[.724 .805 .1 .1],'FitHeightToText','on','String',testo,'Fontsize',12);
 if nargout
     vpp=mpv;
     sig=fitres.sigma;
