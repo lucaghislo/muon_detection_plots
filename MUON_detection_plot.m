@@ -167,7 +167,7 @@ set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
 xlim([0 2000])
-ylim([0.9 100000    ])
+ylim([0.9 100000])
 xlabel('Energy [ADU]')
 ylabel('Counts')
 yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$"])
@@ -178,7 +178,7 @@ ax.YAxis.FontSize = fontsize;
 ax.Legend.FontSize = fontsize;
 f.Position = [200 160 900  550];
 exportgraphics(gcf,'output/incoming_energy_comparison.pdf','ContentType','vector');
-%exportgraphics(gcf,'output/incoming_energy_comparison.png');
+exportgraphics(gcf,'output/incoming_energy_comparison.png');
 
 
 %% PROFILE W/ NOISE SUPPRESSION (THR = 100)
@@ -237,9 +237,10 @@ set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
 xlim([0 2000])
-%ylim([0.8 10000])
+ylim([0.9 100000])
 xlabel('Energy [ADU]')
 ylabel('Counts')
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$"])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
@@ -247,7 +248,7 @@ ax.YAxis.FontSize = fontsize;
 %ax.Legend.FontSize = fontsize;
 f.Position = [200 160 900  550];
 exportgraphics(gcf,'output/incoming_energy_thr130_ZS_comparativa.pdf','ContentType','vector');
-%exportgraphics(gcf,'output/incoming_energy_zero_suppr_thr130_landau.png');
+exportgraphics(gcf,'output/incoming_energy_thr130_ZS_comparativa.png');
 
 
 %% PROFILE W/ NOISE SUPPRESSION (THR = 130, 150)
@@ -376,3 +377,5 @@ ax.YAxis.FontSize = fontsize;
 ax.Legend.FontSize = fontsize;
 f.Position = [200 160 900  550];
 exportgraphics(gcf,'output/incoming_energy_external34_self_100.pdf','ContentType','vector');
+exportgraphics(gcf,'output/incoming_energy_external34_self_100.png');
+
