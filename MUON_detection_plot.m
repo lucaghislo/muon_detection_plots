@@ -537,8 +537,8 @@ data5 = readtable('input/selfTrigger_THR_analysis/self_10min_THR_190.txt');
 data6 = readtable('input/selfTrigger_THR_analysis/self_10min_THR_200.txt');
 data7 = readtable('input/selfTrigger_THR_analysis/self_10min_THR_210.txt');
 data8 = readtable('input/selfTrigger_THR_analysis/self_10min_THR_220.txt');
-% data9 = readtable('input/selfTrigger_THR_analysis/self_10min_THR_230.txt');
-% data10 = readtable('input/selfTrigger_THR_analysis/self_10min_THR_240.txt');
+data9 = readtable('input/selfTrigger_THR_analysis/self_10min_THR_230.txt');
+data10 = readtable('input/selfTrigger_THR_analysis/self_10min_THR_240.txt');
 
 colors = distinguishable_colors(10, 'w');
 f = figure('Visible', 'on');
@@ -552,8 +552,8 @@ dummy5 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(5, 1), colors(5, 2), co
 dummy6 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(6, 1), colors(6, 2), colors(6, 3)]);
 dummy7 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(7, 1), colors(7, 2), colors(7, 3)]);
 dummy8 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(8, 1), colors(8, 2), colors(8, 3)]);
-% dummy9 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(9, 1), colors(9, 2), colors(9, 3)]);
-% dummy10 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(10, 1), colors(10, 2), colors(10, 3)]);
+dummy9 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(9, 1), colors(9, 2), colors(9, 3)]);
+dummy10 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(10, 1), colors(10, 2), colors(10, 3)]);
 
 h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
 h2 = histogram(data2.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
@@ -563,19 +563,19 @@ h5 = histogram(data5.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'Line
 h6 = histogram(data6.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(6, 1), colors(6, 2), colors(6, 3)]);
 h7 = histogram(data7.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(7, 1), colors(7, 2), colors(7, 3)]);
 h8 = histogram(data8.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(8, 1), colors(8, 2), colors(8, 3)]);
-% h9 = histogram(data9.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(9, 1), colors(9, 2), colors(9, 3)]);
-% h10 = histogram(data10.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(10, 1), colors(10, 2), colors(10, 3)]);
+h9 = histogram(data9.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(9, 1), colors(9, 2), colors(9, 3)]);
+h10 = histogram(data10.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(10, 1), colors(10, 2), colors(10, 3)]);
 hold off
 
 box on
 grid on
-legend([dummy1 dummy2 dummy3 dummy4 dummy5 dummy6 dummy7 dummy8], "THR = 150", "THR = 160", ...
+legend([dummy1 dummy2 dummy3 dummy4 dummy5 dummy6 dummy7 dummy8 dummy9 dummy10], "THR = 150", "THR = 160", ...
     "THR = 170", "THR = 180", "THR = 190", "THR = 200", "THR = 210", "THR = 220", "THR = 230", "THR = 240")
 set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
-xlim([0 2005])
-ylim([0.9 10000000])
+xlim([0 2000])
+ylim([0.9 100000000])
 xlabel('Energy [ADU]')
 ylabel('Counts')
 yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$" "$10^{7}$"])
@@ -593,8 +593,8 @@ exportgraphics(gcf,'output/selfTrigger_THR_analysis.pdf','ContentType','vector')
 fontsize = 12;
 
 % external trigger delay 39
-data1 = readtable('input/selfTrigger_THR_analysis/self_10min_THR_150.txt');
-data2 = readtable('input/selfTrigger_THR_analysis/self_10min_THR_160.txt');
+data1 = readtable('input/test_americio/1hr_allchannels.txt');
+data2 = readtable('input/test_americio/1hr_allchannels_no-americio_ZS.txt');
 
 colors = distinguishable_colors(10, 'w');
 f = figure('Visible', 'on');
@@ -609,19 +609,59 @@ hold off
 
 box on
 grid on
-legend([dummy1 dummy2], "With Americium ", "THR = 160")
+legend([dummy1 dummy2], "With Americium ", "Without Americium")
 set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
-xlim([0 2005])
-ylim([0.9 10000000])
+xlim([0 2000])
+ylim([0.9 100080000])
 xlabel('Energy [ADU]')
 ylabel('Counts')
-yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$" "$10^{7}$"])
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$" "$10^{7}$" "$10^{8}$"])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
 ax.Legend.FontSize = fontsize;
 f.Position = [200 160 900  550];
-exportgraphics(gcf,'output/selfTrigger_THR_analysis.pdf','ContentType','vector');
+exportgraphics(gcf,'output/selfTrigger_THR_214_americium_comparison.pdf','ContentType','vector');
+
+
+%% SINGLE CHANNEL SENZA ZS THR = 214 (Ch. 6) + TUTTI I CANALI
+
+fontsize = 12;
+
+% THR = 214
+data1 = readtable('input/test_americio/ch6_THR_214.txt');
+data2 = readtable('input/test_americio/self_THR_214_no-americio.txt');
+
+colors = distinguishable_colors(2, 'w');
+f = figure('Visible', 'on');
+
+hold on
+dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+
+h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+h2 = histogram(data2.Energy_ADC_(data2.Channel == 6), 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+hold off
+
+box on
+grid on
+title("\textbf{Channel 6}")
+legend([dummy1 dummy2], "Channel 6 readout", "All channels readout")
+set(gca, 'YScale', 'log')
+set(gca,'YMinorGrid','on')
+set(gca,'YGrid','on')
+xlim([0 2005])
+ylim([0.9 1000000])
+xlabel('Energy [ADU]')
+ylabel('Counts')
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$"])
+
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+ax.Legend.FontSize = fontsize;
+f.Position = [200 160 900  550];
+exportgraphics(gcf,'output/selfTrigger_THR_214_ch6.pdf','ContentType','vector');
