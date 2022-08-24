@@ -574,10 +574,11 @@ legend([dummy1 dummy2 dummy3 dummy4 dummy5 dummy6 dummy7 dummy8 dummy9 dummy10],
 set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
-xlim([0 2000])
-ylim([0.9 100000000])
+xlim([0 2047])
+ylim([0.9 10000000])
 xlabel('Energy [ADU]')
 ylabel('Counts')
+yticks([1 10 100 1000 10000 100000 1000000 10000000])
 yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$" "$10^{7}$"])
 
 ax = gca; 
@@ -613,10 +614,11 @@ legend([dummy1 dummy2], "With Americium ", "Without Americium")
 set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
-xlim([0 2000])
+xlim([0 2047])
 ylim([0.9 100080000])
 xlabel('Energy [ADU]')
 ylabel('Counts')
+yticks([1 10 100 1000 10000 100000 1000000 10000000 100000000 1000000000])
 yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$" "$10^{7}$" "$10^{8}$"])
 
 ax = gca; 
@@ -669,7 +671,8 @@ xlim([0 2047])
 ylim([0.9 1000000])
 xlabel('Energy [ADU]')
 ylabel('Counts')
-yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$"])
+yticks([1 10 100 1000 10000 100000 1000000 10000000 100000000])
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$" "$10^{7}$"])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
@@ -700,11 +703,11 @@ dummy3 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(3, 1), colors(3, 2), co
 dummy4 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(4, 1), colors(4, 2), colors(4, 3)]);
 dummy5 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(5, 1), colors(5, 2), colors(5, 3)]);
 
-h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-h2 = histogram(data2.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
-h3 = histogram(data3.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(3, 1), colors(3, 2), colors(3, 3)]);
-h4 = histogram(data4.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(4, 1), colors(4, 2), colors(4, 3)]);
-h5 = histogram(data5.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(5, 1), colors(5, 2), colors(5, 3)]);
+h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 0.8, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+h2 = histogram(data2.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 0.8, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+h3 = histogram(data3.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 0.8, 'EdgeColor', [colors(3, 1), colors(3, 2), colors(3, 3)]);
+h4 = histogram(data4.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 0.8, 'EdgeColor', [colors(4, 1), colors(4, 2), colors(4, 3)]);
+h5 = histogram(data5.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 0.8, 'EdgeColor', [colors(5, 1), colors(5, 2), colors(5, 3)]);
 hold off
 
 box on
