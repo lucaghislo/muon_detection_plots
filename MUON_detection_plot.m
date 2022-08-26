@@ -288,7 +288,7 @@ title("\textbf{ENC}");
 %legend([p1 p2], "Evaluated from gaussian interpolation of pedestal", "Evaluated from estimated CDF over charge scan", "Location", "northwest")
 xlabel("Channels")
 ylabel("FWHM ENC [keV]")
-ylim([0 100])
+ylim([0 120])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
