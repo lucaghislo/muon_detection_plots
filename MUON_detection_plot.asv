@@ -272,29 +272,28 @@ fontsize = 12;
 colors = distinguishable_colors(6, 'w');
 
 hold on
-%p1 = plot([0:31], ENC_channels.*0.841, 'LineWidth', 1, 'Marker','o', 'MarkerSize',4, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)], 'MarkerFaceColor', [colors(1, 1), colors(1, 2), colors(1, 3)])
-p2 = plot([0:31], ENC.*0.841, 'LineWidth', 1, 'Marker','o', 'MarkerSize',4, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)], 'MarkerFaceColor', [colors(1, 1), colors(1, 2), colors(1, 3)])
+p1 = plot([0:31], ENC_channels.*0.841, 'LineWidth', 1, 'Marker','o', 'MarkerSize',4, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)], 'MarkerFaceColor', [colors(1, 1), colors(1, 2), colors(1, 3)])
+p2 = plot([0:31], ENC.*0.841, 'LineWidth', 1, 'Marker','o', 'MarkerSize',4, 'Color', [colors(5, 1), colors(5, 2), colors(5, 3)], 'MarkerFaceColor', [colors(5, 1), colors(5, 2), colors(5, 3)])
 
 ylim([0 60])
 xlim([-1 32])
 
 plot([-1:1:32], repelem(4, 34), 'LineStyle','-.', 'LineWidth', 1, 'Color', 'red')
-text(28.8, 7, '4 keV', 'Color', 'red','FontName','Computer Modern', 'FontSize', 12)
+text(28.8, 5.7, '4 keV', 'Color', 'red','FontName','Computer Modern', 'FontSize', 12)
 hold off
 
 box on
 grid on
-title("\textbf{ENC}");
-%legend([p1 p2], "Evaluated from gaussian interpolation of pedestal", "Evaluated from estimated CDF over charge scan", "Location", "northwest")
+title("ENC");
+legend([p1 p2], "")
 xlabel("Channels")
 ylabel("FWHM ENC [keV]")
-ylim([0 100])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
-%ax.Legend.FontSize = fontsize-2;
-exportgraphics(gcf,'output/ENC_channels.pdf','ContentType','vector');
+
+exportgraphics(gcf,'output/ENC_channels_self_.pdf','ContentType','vector');
 
 
 %% PROFILE W/ COMPARISON NAPOLI e MIT
