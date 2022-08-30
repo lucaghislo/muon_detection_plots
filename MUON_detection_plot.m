@@ -537,6 +537,54 @@ exportgraphics(gcf,'output/incoming_energy_external34_self_130_2.pdf','ContentTy
 %exportgraphics(gcf,'output/incoming_energy_external34_self_130.png');
 
 
+%% COMPARATIVA SELF/EXT SCINTILLATORE SOTTO Ch. 0-7
+
+fontsize = 12;
+
+% Delay = 40
+data1 = readtable("input/muons/29082022/self_trigger_prova_130.txt");
+% data19 = readtable("input/muons/29082022/ext_trigger_prova_35_130.txt");
+% data2 = readtable("input/muons/29082022/ext_trigger_prova_40_130.txt");
+data3 = readtable("input/muons/29082022/ext_trigger_prova_44_130_4.txt");
+% data4 = readtable("input/muons/29082022/ext_trigger_prova_50_130.txt");
+
+colors = distinguishable_colors(7, 'w');
+f = figure('Visible', 'on');
+
+hold on
+dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+% dummy19 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(5, 1), colors(5, 2), colors(5, 3)]);
+% dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+dummy3 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(3, 1), colors(3, 2), colors(3, 3)]);
+% dummy4 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(4, 1), colors(4, 2), colors(4, 3)]);
+h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+% h19 = histogram(data19.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(5, 1), colors(5, 2), colors(5, 3)]);
+% h2 = histogram(data2.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+h3 = histogram(data3.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(3, 1), colors(3, 2), colors(3, 3)]);
+% h4 = histogram(data4.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', [colors(4, 1), colors(4, 2), colors(4, 3)]);
+hold off
+
+box on
+grid on
+legend([dummy1 dummy3], "Self trigger", "External trigger, delay: 44 FPGA clocks")
+set(gca, 'YScale', 'log')
+set(gca,'YMinorGrid','on')
+set(gca,'YGrid','on')
+xlim([0 2047])
+%ylim([0.9 100000])
+xlabel('Energy [ADU]')
+ylabel('Counts')
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$"])
+
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+ax.Legend.FontSize = fontsize;
+f.Position = [200 160 900  550];
+exportgraphics(gcf,'output/external_trigger_delay_comparison.pdf','ContentType','vector');
+%exportgraphics(gcf,'output/incoming_energy_external34_self_130.png');
+
+
 %% PLOT ACQUISIZIONI SELF TRIGGER SPAN THR 150 - 250
 
 fontsize = 12;
@@ -607,8 +655,8 @@ exportgraphics(gcf,'output/selfTrigger_THR_analysis.pdf','ContentType','vector')
 fontsize = 12;
 
 % external trigger delay 39
-data1 = readtable('input/test_americio/1hr_allchannels.txt');
-data2 = readtable('input/test_americio/1hr_allchannels_no-americio_ZS.txt');
+data1 = readtable('input/test_americio/test_americio_self_TH_214_8ch.txt');
+data2 = readtable('input/test_americio/ch6_THR_214_ch0-7.txt'); 
 
 colors = distinguishable_colors(10, 'w');
 f = figure('Visible', 'on');
