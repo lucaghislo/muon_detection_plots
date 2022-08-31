@@ -442,7 +442,6 @@ f.Position = [200 160 900  550];
 exportgraphics(gcf,'output/incoming_energy_zero_suppr_thr130.pdf','ContentType','vector');
 
 
-
 %% DIFFERENT DELAYS
 
 fontsize = 12;
@@ -690,6 +689,90 @@ f.Position = [200 160 900  550];
 exportgraphics(gcf,'output/selfTrigger_THR_214_americium_comparison.pdf','ContentType','vector');
 
 
+%% CONFRONTO THR = 130 MUONI EXT/SELF
+
+fontsize = 12;
+
+% external trigger delay 39
+data1 = readtable('input/muons/31082022/self_trigger_1hr_THR_130_pt4_34.txt');
+data2 = readtable('input/muons/31082022/ext_trigger_1hr_THR_130_pt4_34.txt'); 
+
+colors = distinguishable_colors(10, 'w');
+f = figure('Visible', 'on');
+hold on
+
+dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+
+h1 = histogram(data1.Energy_ADC_(data2.Channel>=0 & data2.Channel<=7), 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+h2 = histogram(data2.Energy_ADC_(data2.Channel>=0 & data2.Channel<=7), 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+hold off
+
+box on
+grid on
+legend([dummy1 dummy2], "Self trigger", "External trigger")
+set(gca, 'YScale', 'log')
+set(gca,'YMinorGrid','on')
+set(gca,'YGrid','on')
+xlim([0 2047])
+ylim([0.9 10000])
+xlabel('Energy [ADU]')
+ylabel('Counts')
+yticks([1 10 100 1000 10000])
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$"])
+
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+ax.Legend.FontSize = fontsize;
+f.Position = [200 160 900  550];
+exportgraphics(gcf,'output/ext_self_muons_THR_130_delay_34_ch0-7.pdf','ContentType','vector');
+
+
+%% AMERICIO THR = 214 sotto Ch. 0-7
+
+fontsize = 12;
+
+% external trigger delay 39
+data1 = readtable('input/test_americio/30082022/test_americio_self_1hr_TH_214_8ch_tp4.txt');
+data2 = readtable('input/test_americio/30082022/test_NO_americio_self_1hr_TH_214_8ch_tp4.txt'); 
+
+colors = distinguishable_colors(10, 'w');
+f = figure('Visible', 'on');
+hold on
+
+dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+
+h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+h2 = histogram(data2.Energy_ADC_, 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+hold off
+
+% area WITH americio
+area1 = sum(h1.Values) * h1.BinWidth;
+area2 = sum(h2.Values) * h2.BinWidth;
+
+box on
+grid on
+legend([dummy1 dummy2], "With Americium ", "Without Americium")
+set(gca, 'YScale', 'log')
+set(gca,'YMinorGrid','on')
+set(gca,'YGrid','on')
+xlim([0 2047])
+ylim([0.9 100080000])
+xlabel('Energy [ADU]')
+ylabel('Counts')
+yticks([1 10 100 1000 10000 100000 1000000 10000000 100000000 1000000000])
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$" "$10^{7}$" "$10^{8}$"])
+
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+%ax.Legend.FontSize = fontsize;
+f.Position = [200 160 900  550];
+exportgraphics(gcf,'output/selfTrigger_THR_214_americium_ch0-7_3108.pdf','ContentType','vector');
+
+
 %% SINGLE CHANNEL SENZA ZS THR = 214 (Ch. 6) + TUTTI I CANALI
 
 fontsize = 12;
@@ -834,6 +917,53 @@ ax.YAxis.FontSize = fontsize;
 ax.Legend.FontSize = fontsize;
 f.Position = [200 160 900  550];
 exportgraphics(gcf,'output/selfTrigger_THR_214_sensor3_channels.pdf','ContentType','vector');
+
+
+%% THR = 214 solo SENSORE 0 (tutti gli 8 canali) -> AMERICIO
+
+clear; clc;
+fontsize = 12;
+data = readtable('input/test_americio/30082022/test_americio_self_1hr_TH_214_8ch_tp4.txt');
+
+
+colors = distinguishable_colors(8, 'w');
+
+tiledlayout('flow')
+f = figure('Visible', 'off');
+
+counter = 1;
+dummys = nan(8, 1);
+channels = [0:7];
+legend_description = "Channel \#" + channels;
+
+for i = 0:7
+    nexttile
+    hold on
+    dummy = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(counter, 1), colors(counter, 2), colors(counter, 3)]);
+    dummys(counter, 1) = dummy;
+    h = histogram(data.Energy_ADC_(data.Channel == i), 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 0.8, 'EdgeColor', [colors(counter, 1), colors(counter, 2), colors(counter, 3)]);
+    counter = counter + 1;
+
+    box on
+    grid on
+    %legend(dummys, legend_description);
+    set(gca, 'YScale', 'log')
+    set(gca,'YMinorGrid','on')
+    set(gca,'YGrid','on')
+    xlim([0 2047])
+    ylim([0.9 10000000])
+    xlabel('Energy [ADU]')
+    ylabel('Counts')
+    yticks([1 10 100 1000 10000 100000 1000000 10000000 100000000])
+    yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$" "$10^{7}$"])
+end
+
+% ax = gca; 
+% ax.XAxis.FontSize = fontsize; 
+% ax.YAxis.FontSize = fontsize; 
+% ax.Legend.FontSize = fontsize;
+f.Position = [0 0 1920  1080];
+exportgraphics(gcf,'output/selfTrigger_THR_214_sensor0_americium.pdf','ContentType','vector');
 
 
 %% THR = 200 - ANALISI SINGOLI SENSORI (attivati uno alla volta)
