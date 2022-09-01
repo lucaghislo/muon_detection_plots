@@ -1,4 +1,4 @@
-%% HK TEST PLOT
+%% CHANGE TO LATEX INTERPRETER
 
 clear; clc;
 
@@ -31,19 +31,20 @@ end
 % Calcolo offset per canale
 offset_ch = nan(32,1);
 for channel = 0:31
-    data_offset = readtable(['input/HK_test_03082022/HK_NO/data/HK_Leakage_ch', num2str(channel) ,'.dat'])
+    data_offset = readtable(['input/HK_test_01102022/single_channels/ch_', num2str(channel) ,'.dat'])
     offset_mean = round(mean(data_offset.Value));
     offset_ch(channel+1, 1) = offset_mean;
 end
 
-voltage_coeff = 1.76;
+voltage_coeff = 1.76 * 10^-3;
 den_coeff = 3.87;
 R = 223.7 * 10 ^ 3; % CORRETTO
 %R = 1.99 * 10 ^ 6; % H = 0 (old)
 leakage_measures_I = abs(((1024 - (leakage_measures)) * voltage_coeff)/(den_coeff * 10 * R));
+leakage_measures_I = leakage_measures_I * 10^9;
 
-leakage_measures_I = leakage_measures_I * 1000; % mA -> uA
-leakage_measures_I = leakage_measures_I * 1000; % uA -> nA
+%leakage_measures_I = leakage_measures_I * 1000; % mA -> uA
+%leakage_measures_I = leakage_measures_I * 1000; % uA -> nA
 
 
 %% PLOT
@@ -60,19 +61,23 @@ hold off
 
 channels = strings(32, 1);
 for ch = 0:31
-    channels(ch+1, 1) = strcat("Ch \#", num2str(ch));
+    channels(ch+1, 1) = strcat("", num2str(ch));
 end
 
-legend(channels, 'NumColumns', 2, 'Location','eastoutside')
+hleg = legend(channels, 'NumColumns', 2, 'Location','eastoutside')
 grid on
 box on
-%ylim([0 20])
+ylim([0.5 200])
 xticks([-250:25:0])
 xlabel('Bias voltage [V]')
 ylabel('Leakage current [nA]')
 set(gca, 'YScale', 'log')
 %axis([-250 0 0.5 300])
 %yticks([0.1 0.2 0.3 0.4 0.5 1 2 3 4 5 10 50 100 200 300])
+yticklabels([1 10 100])
+
+htitle = get(hleg,'Title');
+set(htitle,'String','\textbf{Channel}')
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
@@ -87,8 +92,23 @@ exportgraphics(gcf,'output/leakage_current.pdf','ContentType','vector');
 fontsize = 12;
 colors = distinguishable_colors(32, 'w');
 
+leakage_measures = nan(32, 1);
+counter = 1;
+for channel = 0:31
+    data = readtable(['input/HK_test_01102022/single_channels/ch_', num2str(channel),'.dat']);
+    ch_mean = mean(data.Value);
+    leakage_measures(channel+1, counter) = round(ch_mean);
+end
+
+voltage_coeff = 1.76 * 10^-3;
+den_coeff = 3.87;
+R = 223.7 * 10 ^ 3; % CORRETTO
+%R = 1.99 * 10 ^ 6; % H = 0 (old)
+leakage_measures_I = abs(((1024 - (leakage_measures)) * voltage_coeff)/(den_coeff * 10 * R));
+leakage_measures_I = leakage_measures_I * 10^9;
+
 f = figure('Visible', 'on');
-semilogy([0:1:31], leakage_measures_I(:, 26), 'LineWidth', 1, 'Marker','o', 'MarkerSize',4, 'MarkerFaceColor', '0.00,0.45,0.74')
+semilogy([0:1:31], leakage_measures_I(:, 1), 'LineWidth', 1, 'Marker','o', 'MarkerSize',4, 'MarkerFaceColor', '0.00,0.45,0.74')
 
 grid on
 box on
@@ -96,6 +116,7 @@ xlabel('Channel')
 ylabel('Leakage current [nA]')
 set(gca, 'YScale', 'log')
 axis([-1 32 0.5 150])
+yticklabels([1 10 100])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
@@ -137,7 +158,7 @@ data_caen = readtable('input/HV_voltage_current_40C.dat');
 
 hold on
 semilogy([0:-10:-250], sum(leakage_measures_I), 'LineWidth', 1, 'Marker','o', 'MarkerSize', 4, 'MarkerFaceColor', '0.00,0.45,0.74')
-semilogy([0:-10:-250], flip(data_caen.current*1000), 'LineWidth', 1, 'Marker','o', 'MarkerSize', 4)
+semilogy([0:-10:-250], data_caen.current*1000, 'LineWidth', 1, 'Marker','o', 'MarkerSize', 4)
 hold off
 
 grid on
@@ -147,7 +168,7 @@ xlabel('Bias voltage [V]')
 ylabel('Total leakage current [nA]')
 xticks([-250:25:0])
 yticks([0:250:1500])
-ylim([0 1500])
+%ylim([0 1500])
 set(gca, 'YScale', 'log')
 
 fontsize = 12;
