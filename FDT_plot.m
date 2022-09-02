@@ -326,10 +326,10 @@ hold off
 
 channels = strings(32, 1);
 for ch = 0:31
-    channels(ch+1, 1) = strcat("Ch \#", num2str(ch));
+    channels(ch+1, 1) = strcat("", num2str(ch));
 end
 
-legend(channels, 'NumColumns', 2, 'Location','eastoutside')
+hleg = legend(channels, 'NumColumns', 2, 'Location','eastoutside')
 xlabel('Incoming energy [MeV]');
 ylabel('Channel Output [ADU]');
 xlim([0, 53824]);
@@ -341,6 +341,9 @@ set(gcf, 'Color', 'w');
 set(gca,'fontname','Computer Modern') 
 grid on
 box on
+
+htitle = get(hleg,'Title');
+set(htitle,'String','\textbf{Channel}')
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 

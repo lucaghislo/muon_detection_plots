@@ -271,29 +271,35 @@ f = figure('Visible','on')
 fontsize = 12;
 colors = distinguishable_colors(6, 'w');
 
+charge_scan_data = readtable("input/ENC_THR_charge_scan/ENC_THR_data_charge_scan_THR_214.dat")
+
+ENC = charge_scan_data.ENC;
+THR = charge_scan_data.Threshold;
+
 hold on
 %p1 = plot([0:31], ENC_channels.*0.841, 'LineWidth', 1, 'Marker','o', 'MarkerSize',4, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)], 'MarkerFaceColor', [colors(1, 1), colors(1, 2), colors(1, 3)])
-p2 = plot([0:31], ENC.*0.841, 'LineWidth', 1, 'Marker','o', 'MarkerSize',4, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)], 'MarkerFaceColor', [colors(1, 1), colors(1, 2), colors(1, 3)])
+p2 = plot([0:7], ENC([1:8]).*0.841, 'LineWidth', 1, 'Marker','o', 'MarkerSize',3, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)], 'MarkerFaceColor', [colors(1, 1), colors(1, 2), colors(1, 3)])
+p3 = plot([0:7], THR([1:8]).*0.841, 'LineWidth', 1, 'Marker','o', 'MarkerSize',3, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)], 'MarkerFaceColor', [colors(2, 1), colors(2, 2), colors(2, 3)])
 
-ylim([0 60])
-xlim([-1 32])
-
-plot([-1:1:32], repelem(4, 34), 'LineStyle','-.', 'LineWidth', 1, 'Color', 'red')
-text(28.8, 7, '4 keV', 'Color', 'red','FontName','Computer Modern', 'FontSize', 12)
+%plot([-1:1:32], repelem(4, 34), 'LineStyle','-.', 'LineWidth', 1, 'Color', 'red')
+%text(0, 7, '4 keV', 'Color', 'red','FontName','Computer Modern', 'FontSize', 12)
 hold off
 
 box on
 grid on
-title("\textbf{ENC}");
+%title("\textbf{ENC}");
 %legend([p1 p2], "Evaluated from gaussian interpolation of pedestal", "Evaluated from estimated CDF over charge scan", "Location", "northwest")
 xlabel("Channels")
-ylabel("FWHM ENC [keV]")
-ylim([0 120])
+ylabel("[keV]")
+ylim([0 40])
+yticks([0:10:120])
+xlim([-0.5 7.5])
+legend("FWHM ENC", "Threhsold", 'Location', 'northwest')
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
-%ax.Legend.FontSize = fontsize-2;
+ax.Legend.FontSize = fontsize-2;
 exportgraphics(gcf,'output/ENC_channels.pdf','ContentType','vector');
 
 
@@ -925,7 +931,6 @@ clear; clc;
 fontsize = 12;
 data = readtable('input/test_americio/30082022/test_americio_self_1hr_TH_214_8ch_tp4.txt');
 
-
 colors = distinguishable_colors(8, 'w');
 
 tiledlayout('flow')
@@ -1014,3 +1019,34 @@ ax.YAxis.FontSize = fontsize;
 ax.Legend.FontSize = fontsize;
 f.Position = [200 160 900  550];
 exportgraphics(gcf,'output/selfTrigger_THR_200_sensors_comparison_no-all.pdf','ContentType','vector');
+
+
+%% PLOT DI PROVA AFTER SCRIPT ZAMPA
+
+clear; clc;
+fontsize = 12;
+
+data = readtable("input/ch4_americio.csv");
+data = table2array(data);
+
+f = figure('Visible', 'off');
+
+histogram(data, 'BinWidth', 0.2, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+
+grid on
+box on
+set(gca, 'YScale', 'log')
+xlim([-40 200])
+xticks([-40:10:200])
+xlabel('Energy [ADU]')
+ylabel('Counts')
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{4}$"])
+
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+f.Position = [200 160 1360  768];
+
+exportgraphics(gcf,'output/ch4_americio_log.pdf','ContentType','vector');
+exportgraphics(gcf,'output/ch4_americio_log.png');
+writematrix(sort(data),'output/data/ch4_americio.dat');
