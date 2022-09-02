@@ -1045,7 +1045,7 @@ yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{4}$"])
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
-f.Position = [200 160 1360  768];
+f.Position = [200 160 1360 768];
 
 exportgraphics(gcf,'output/ch4_americio_log.pdf','ContentType','vector');
 exportgraphics(gcf,'output/ch4_americio_log.png');
