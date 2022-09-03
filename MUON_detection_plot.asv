@@ -1056,18 +1056,16 @@ data = readtable("input/self_muons_THR130.csv");
 data = table2array(data);
 
 gain_data = readtable("input/Low_Energy_Gain.dat")
-gain = gain_data.x3_g_mwo(gain_data.pt == 4)
-mean_gain = mean(gain)
 
 f = figure('Visible', 'off');
 
-histogram(data./mean_gain, 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+histogram(data, 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
 
 grid on
 box on
 set(gca, 'YScale', 'log')
 xlim([-50 1000])
-%xticks([-200:100:1000])
+xticks([-200:100:1000])
 xlabel('Energy [keV]')
 ylabel('Counts')
 yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{4}$"])
@@ -1075,7 +1073,7 @@ yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{4}$"])
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
-f.Position = [200 160 900  550];
+f.Position = [200 160 1360 768];
 
 exportgraphics(gcf,'output/self_muons_THR130.pdf','ContentType','vector');
 %exportgraphics(gcf,'output/ch4_americio_log.png');
