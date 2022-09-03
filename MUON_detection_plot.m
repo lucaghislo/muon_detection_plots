@@ -1037,7 +1037,7 @@ data_cubica = data .* (mean(coeff1)) + (data.^2) .* (mean(coeff2)) + (data.^3) .
 f = figure('Visible', 'on');
 
 hold on
-histogram(data_cubica./0.841, 'BinWidth', 0.2, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+histogram(data, 'BinWidth', 0.2, 'DisplayStyle', 'stairs', 'LineWidth', 1) % data_cubica./0.841
 grid on
 box on
 set(gca, 'YScale', 'log')
