@@ -1028,11 +1028,16 @@ fontsize = 12;
 data = readtable("input/ch4_americio.csv");
 data = table2array(data);
 
+coeff3 = [4.24e-07 1.73e-8 3.95e-7 4.05e-7 6.06e-8 1.31e-7 1.39e-8 3.86e-8];
+coeff2 = [2.71 6.28 8.51 8.66 5.68 7.07 5.96 5.98]*10^(-4);
+coeff1 = [0.852 0.933 0.966 0.916 0.925 0.883 0.904 0.892];
+
+data_cubica = data .* (mean(coeff1)) + (data.^2) .* (mean(coeff2)) + (data.^3) .* (mean(coeff3));
 
 f = figure('Visible', 'on');
 
 hold on
-histogram(data, 'BinWidth', 0.2, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+histogram(data_cubica./0.841, 'BinWidth', 0.2, 'DisplayStyle', 'stairs', 'LineWidth', 1)
 grid on
 box on
 set(gca, 'YScale', 'log')
