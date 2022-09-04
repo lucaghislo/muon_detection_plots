@@ -1045,7 +1045,7 @@ xlim([-40 200])
 xticks([-40:10:200])
 xlabel('Energy [keV]')
 ylabel('Counts')
-yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{4}$"])
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$"])
 
 %text(51, 2600, "59.54 keV", 'Color', 'Red', 'Fontsize', 12)
 %text(20, 270, "26.34 keV", 'Color', 'Red', 'Fontsize', 12)
