@@ -80,7 +80,7 @@ for sens = 1:4
 
     box on
     grid on
-    title(['\textbf{Detector ', num2str(sens), ' (Channels ', num2str(channels_inizio(sens)) ,' - ', num2str(channels_fine(sens)),')}'])
+    title(['\textbf{Detector ', num2str(sens-1), ' (Channels ', num2str(channels_inizio(sens)) ,' - ', num2str(channels_fine(sens)),')}'])
     set(gca, 'YScale', 'log')
     set(gca,'YMinorGrid','on')
     set(gca,'YGrid','on')
