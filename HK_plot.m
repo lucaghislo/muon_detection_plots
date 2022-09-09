@@ -36,7 +36,7 @@ for channel = 0:31
     offset_ch(channel+1, 1) = offset_mean;
 end
 
-voltage_coeff = 1.76 * 10^-3;
+voltage_coeff = 1.72 * 10^-3;
 den_coeff = 3.87;
 R = 223.7 * 10 ^ 3; % CORRETTO
 %R = 1.99 * 10 ^ 6; % H = 0 (old)
@@ -100,7 +100,7 @@ for channel = 0:31
     leakage_measures(channel+1, counter) = round(ch_mean);
 end
 
-voltage_coeff = 1.76 * 10^-3;
+voltage_coeff = 1.72 * 10^-3;
 den_coeff = 3.87;
 R = 223.7 * 10 ^ 3; % CORRETTO
 %R = 1.99 * 10 ^ 6; % H = 0 (old)
@@ -196,7 +196,7 @@ data_offset = readtable(['input/HK_test_10082022_man/no_channels.dat']);
 offset_ADC = round(mean(data_offset.Value));
 
 % conversione
-voltage_coeff = 1.76;
+voltage_coeff = 1.72 * 10^-3;
 den_coeff = 3.87;
 R = 223.7 * 10 ^ 3; % CORRETTO
 %R = 1.99 * 10 ^ 6; % H = 0 (old)
@@ -213,7 +213,7 @@ clear; clc;
 
 leak_curr_ADC = nan(32, 1);
 
-for ch = 1:32
+for ch = 32:-1:1
     data = readtable(['input/HK_test_10082022_man/incremental/', num2str(ch), 'ch.dat']);
     val = round(mean(data.Value));
     leak_curr_ADC(ch) = val;
@@ -224,7 +224,7 @@ data_offset = readtable(['input/HK_test_10082022_man/no_channels.dat']);
 offset_ADC = round(mean(data_offset.Value));
 
 % conversione
-voltage_coeff = 1.76;
+voltage_coeff = 1.72 * 10^-3;
 den_coeff = 3.87;
 R = 223.7 * 10 ^ 3; % CORRETTO
 %R = 1.99 * 10 ^ 6; % H = 0 (old)

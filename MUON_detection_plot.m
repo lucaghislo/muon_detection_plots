@@ -289,7 +289,7 @@ box on
 grid on
 %title("\textbf{ENC}");
 %legend([p1 p2], "Evaluated from gaussian interpolation of pedestal", "Evaluated from estimated CDF over charge scan", "Location", "northwest")
-xlabel("Channels")
+xlabel("Channel")
 ylabel("[keV]")
 ylim([0 40])
 yticks([0:10:120])
