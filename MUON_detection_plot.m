@@ -84,7 +84,7 @@ for sens = 1:4
     set(gca, 'YScale', 'log')
     set(gca,'YMinorGrid','on')
     set(gca,'YGrid','on')
-    xlim([0 2000])
+    xlim([0 1000]) % [0 2000]
     ylim([0.9 2000])
     xlabel('Energy [ADU]')
     ylabel('Counts')
@@ -93,10 +93,10 @@ for sens = 1:4
     ax = gca; 
     ax.XAxis.FontSize = fontsize; 
     ax.YAxis.FontSize = fontsize; 
-    %f.Position = [0 0 2160 4096*10];
+    f.Position = [0 0 400 600];
 
-    exportgraphics(gcf,['output/incoming_energy34_2hr_sens', num2str(sens),'.pdf'],'ContentType','vector');
-    print(f, ['output/incoming_energy34_2hr_sens', num2str(sens)],'-dsvg')
+    exportgraphics(gcf,['output/incoming_energy34_2hr_sens', num2str(sens),'_half.pdf'],'ContentType','vector');
+    %print(f, ['output/incoming_energy34_2hr_sens', num2str(sens)],'-dsvg')
 end
 
 
@@ -292,9 +292,9 @@ grid on
 xlabel("Channel")
 ylabel("[keV]")
 ylim([0 40])
-yticks([0:10:120])
+yticks([0:5:120])
 xlim([-0.5 7.5])
-legend("FWHM ENC", "Threhsold", 'Location', 'northwest')
+legend("ENC FWHM", "Threhsold", 'Location', 'northwest')
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
@@ -1025,7 +1025,7 @@ exportgraphics(gcf,'output/selfTrigger_THR_200_sensors_comparison_no-all.pdf','C
 
 clear; clc;
 fontsize = 12;
-data = readtable("input/ch4_americio.csv");
+data = readtable("input/ch4_self_muons_THR130_ch7.csv");
 data = table2array(data);
 
 coeff3 = [4.24e-07 1.73e-8 3.95e-7 4.05e-7 6.06e-8 1.31e-7 1.39e-8 3.86e-8];
@@ -1037,7 +1037,7 @@ data_cubica = data .* (mean(coeff1)) + (data.^2) .* (mean(coeff2)) + (data.^3) .
 f = figure('Visible', 'on');
 
 hold on
-histogram(data, 'BinWidth', 0.2, 'DisplayStyle', 'stairs', 'LineWidth', 1) % data_cubica./0.841
+histogram(data./0.841, 'BinWidth', 0.2, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', "#D95319") % data_cubica./0.841
 grid on
 box on
 set(gca, 'YScale', 'log')
@@ -1054,9 +1054,9 @@ ax = gca;
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
 f.Position = [200 160 1360  768];
-exportgraphics(gcf,'output/ch4_americio_log.pdf','ContentType','vector');
-exportgraphics(gcf,'output/ch4_americio_log.png');
-writematrix(sort(data),'output/data/ch4_americio.dat');
+exportgraphics(gcf,'output/ch4_americio_log_ch7.pdf','ContentType','vector');
+exportgraphics(gcf,'output/ch4_americio_log_ch7.png');
+writematrix(sort(data),'output/data/ch4_americio_ch7.dat');
 
 
 %% PLOT DI PROVA AFTER SCRIPT ZAMPA: SELF TRIGGER MUONI
