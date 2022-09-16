@@ -294,7 +294,7 @@ ylabel("[keV]")
 ylim([0 40])
 yticks([0:5:120])
 xlim([-0.5 7.5])
-legend("ENC FWHM", "Threshold", 'Location', 'northwest')
+legend("ENC FWHM $\mu = $ ", "Threshold", 'Location', 'northwest')
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
@@ -1120,9 +1120,10 @@ f = figure('Visible', 'on');
 hold on
 h1 = histogram(data_extTrigger(:, 7), 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
 h2 = histogram(data_selfTrigger(:, 7), 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
-h3 = histogram(data_selfTriggerZS(:, 7), 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+%h3 = histogram(data_selfTriggerZS(:, 7), 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
 
-legend([h1 h2 h3], "External trigger", "Selft trigger", "Selft trigger with ZS")
+%legend([h1 h2 h3], "External trigger", "Selft trigger", "Selft trigger with ZS")
+legend([h1 h2], "External trigger", "Selft trigger")
 
 grid on
 box on
@@ -1179,4 +1180,3 @@ ax.YAxis.FontSize = fontsize;
 f.Position = [200 160 900  550];
 
 exportgraphics(gcf,'output/15092022_self_muons_THR_130_detectors.pdf','ContentType','vector');
-
