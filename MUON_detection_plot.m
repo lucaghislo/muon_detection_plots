@@ -708,19 +708,19 @@ f = figure('Visible', 'on');
 hold on
 
 dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(5, 1), colors(5, 2), colors(5, 3)]);
 
 h1 = histogram(data1.Energy_ADC_(data2.Channel>=0 & data2.Channel<=7), 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-h2 = histogram(data2.Energy_ADC_(data2.Channel>=0 & data2.Channel<=7), 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+h2 = histogram(data2.Energy_ADC_(data2.Channel>=0 & data2.Channel<=7), 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(5, 1), colors(5, 2), colors(5, 3)]);
 hold off
 
 box on
 grid on
-legend([dummy1 dummy2], "Self trigger", "External trigger")
+legend([dummy2 dummy1], "External trigger", "Self trigger")
 set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
-xlim([0 2047])
+xlim([0 2000])
 ylim([0.9 10000])
 xlabel('Energy [ADU]')
 ylabel('Counts')
@@ -1099,3 +1099,84 @@ f.Position = [200 160 900  550];
 exportgraphics(gcf,'output/self_muons_THR130.pdf','ContentType','vector');
 %exportgraphics(gcf,'output/ch4_americio_log.png');
 writematrix(sort(data),'output/data/self_muons_THR130.dat');
+
+
+%% PLOT MUONI 14/09 - 15/09: Ch 0-7 THR = 130 (ext, self, self con ZS)
+
+clear; clc;
+fontsize = 12;
+
+data_extTrigger = readtable('input/muons/14092022/extTrigger_1hr_detector_0_THR_130_delay_34.txt');
+data_extTrigger = table2array(data_extTrigger);
+
+data_selfTrigger = readtable('input/muons/14092022/selfTrigger_1hr_detector_0_THR_130.txt');
+data_selfTrigger = table2array(data_selfTrigger);
+
+data_selfTriggerZS = readtable('input/muons/14092022/selfTrigger_1hr_detector_0_THR_130_ZS.txt');
+data_selfTriggerZS = table2array(data_selfTriggerZS);
+
+f = figure('Visible', 'on');    
+
+hold on
+h1 = histogram(data_extTrigger(:, 7), 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+h2 = histogram(data_selfTrigger(:, 7), 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+h3 = histogram(data_selfTriggerZS(:, 7), 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+
+legend([h1 h2 h3], "External trigger", "Selft trigger", "Selft trigger with ZS")
+
+grid on
+box on
+set(gca, 'YScale', 'log')
+xlabel('Energy [keV]')
+ylabel('Counts')
+xlim([0 2047])
+
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+f.Position = [200 160 900  550];
+
+exportgraphics(gcf,'output/14092022_ext_self_trigger_muons.pdf','ContentType','vector');
+
+
+%% PLOT MUONI 14/09 - 15/09: self trigger THR = 130 sui singoli detector
+
+clear; clc;
+fontsize = 12;
+
+data0 = readtable('input/muons/15092022/selfTrigger_THR_130_1hr_sens0.txt');
+data0 = table2array(data0);
+
+data1 = readtable('input/muons/15092022/selfTrigger_THR_130_1hr_sens1.txt');
+data1 = table2array(data1);
+
+data2 = readtable('input/muons/15092022/selfTrigger_THR_130_1hr_sens2.txt');
+data2 = table2array(data2);
+
+data3 = readtable('input/muons/15092022/selfTrigger_THR_130_1hr_sens3.txt');
+data3 = table2array(data3);
+
+f = figure('Visible', 'on');    
+
+hold on
+h1 = histogram(data0(:, 7), 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+h2 = histogram(data1(:, 7), 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+h3 = histogram(data2(:, 7), 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+h4 = histogram(data3(:, 7), 'BinWidth', 5, 'DisplayStyle', 'stairs', 'LineWidth', 1)
+
+legend([h1 h2 h3 h4], "Detector \#0", "Detector \#1", "Detector \#2", "Detector \#3")
+
+grid on
+box on
+set(gca, 'YScale', 'log')
+xlabel('Energy [keV]')
+ylabel('Counts')
+xlim([0 2047])
+
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+f.Position = [200 160 900  550];
+
+exportgraphics(gcf,'output/15092022_self_muons_THR_130_detectors.pdf','ContentType','vector');
+
