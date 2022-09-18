@@ -294,7 +294,7 @@ ylabel("[keV]")
 ylim([0 40])
 yticks([0:5:120])
 xlim([-0.5 7.5])
-legend("ENC FWHM $\mu = $ ", "Threshold", 'Location', 'northwest')
+legend("ENC FWHM", "Threshold", 'Location', 'northwest')
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
