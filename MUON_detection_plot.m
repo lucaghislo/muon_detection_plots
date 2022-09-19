@@ -1025,7 +1025,7 @@ exportgraphics(gcf,'output/selfTrigger_THR_200_sensors_comparison_no-all.pdf','C
 
 clear; clc;
 fontsize = 12;
-data = readtable("input/ch4_self_muons_THR130_ch7.csv");
+data = readtable("input/ch4_self_muons_THR130_ch6.csv");
 data = table2array(data);
 
 coeff3 = [4.24e-07 1.73e-8 3.95e-7 4.05e-7 6.06e-8 1.31e-7 1.39e-8 3.86e-8];
@@ -1036,16 +1036,31 @@ data_cubica = data .* (mean(coeff1)) + (data.^2) .* (mean(coeff2)) + (data.^3) .
 
 f = figure('Visible', 'on');
 
+data = data./0.841;
+data = data(data>15);
+
 hold on
-histogram(data./0.841, 'BinWidth', 0.2, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', "#D95319") % data_cubica./0.841
+plot_IT = histogram(data, 'BinWidth', 0.2, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'EdgeColor', "#D95319") % data_cubica./0.841
+%histfit(data(data>40 & data<70))
+
+scale = 0.083;
+pd_IT = fitdist(data(data>51 & data<70),'Normal')
+x_values_IT = [(plot_IT.BinEdges(1)):0.0001:(plot_IT.BinEdges(end))];
+pdf_IT = pdf(pd_IT, x_values_IT) * trapz(plot_IT.Values) * scale;
+plot(x_values_IT, pdf_IT, 'LineWidth', 1, 'Color', 'blue')
+
+find(pdf_IT == max(pdf_IT)/2)
+annotation('textbox', [0.4, 0.7, 0.1, 0.1], 'String', ["$\mu \approx $ 59.71 keV", "$\sigma \approx $ 4.25 keV", "FWHM $\approx$ 10 keV"], 'FontSize', 12); 
+
 grid on
 box on
-set(gca, 'YScale', 'log')
-xlim([-40 200])
-xticks([-40:10:200])
+%set(gca, 'YScale', 'log')
+%xlim([-40 200])
+%xticks([-40:10:200])
 xlabel('Energy [keV]')
 ylabel('Counts')
-yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$"])
+xlim([0 200])
+%yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$"])
 
 %text(51, 2600, "59.54 keV", 'Color', 'Red', 'Fontsize', 12)
 %text(20, 270, "26.34 keV", 'Color', 'Red', 'Fontsize', 12)
@@ -1054,9 +1069,9 @@ ax = gca;
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
 f.Position = [200 160 1360  768];
-exportgraphics(gcf,'output/ch4_americio_log_ch7.pdf','ContentType','vector');
-exportgraphics(gcf,'output/ch4_americio_log_ch7.png');
-writematrix(sort(data),'output/data/ch4_americio_ch7.dat');
+exportgraphics(gcf,'output/ch4_americio_log_ch6_linear.pdf','ContentType','vector');
+%exportgraphics(gcf,'output/ch4_americio_log_ch6_linear.png');
+writematrix(sort(data),'output/data/ch4_americio_ch6_linear.dat');
 
 
 %% PLOT DI PROVA AFTER SCRIPT ZAMPA: SELF TRIGGER MUONI
