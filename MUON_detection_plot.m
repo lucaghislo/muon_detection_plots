@@ -1263,5 +1263,5 @@ ax.YAxis.FontSize = fontsize;
 ax.Legend.FontSize = fontsize;
 f.Position = [200 160 900  550];
 
-exportgraphics(gcf,'output/19092022/self_single-detectors_15min_THR_214.pdf','ContentType','vector');
+exportgraphics(gcf,'output/19092022/self_sens3_15min_THR_214.pdf','ContentType','vector');
 
