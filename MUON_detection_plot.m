@@ -1180,3 +1180,88 @@ ax.YAxis.FontSize = fontsize;
 f.Position = [200 160 900  550];
 
 exportgraphics(gcf,'output/15092022_self_muons_THR_130_detectors.pdf','ContentType','vector');
+
+
+%% PLOT SELF TRIGGER 19/09
+
+clear; clc;
+fontsize = 12;
+colors = distinguishable_colors(5, 'w');
+
+data_allCh = readtable('input/muons/19092022/selfTrigger_allch_THR_214_30min.txt');
+data_allCh = table2array(data_allCh);
+
+data_allChNo2930 = readtable('input/muons/19092022/selfTrigger_30chs_THR_214_30min.txt');
+data_allChNo2930 = table2array(data_allChNo2930);
+
+f = figure('Visible', 'on');    
+
+hold on
+h1 = histogram(data_allCh(:, 7), 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)])
+h2 = histogram(data_allChNo2930(:, 7), 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)])
+
+legend([h1 h2], "Self trigger: all channels", "Self trigger: no ch. 29-30")
+
+grid on
+box on
+set(gca, 'YScale', 'log')
+xlabel('Energy [ADU]')
+ylabel('Counts')
+xlim([0 2047])
+%ylim([0.9 1000000])
+%yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$" "$10^{7}$"])
+
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+ax.Legend.FontSize = fontsize;
+f.Position = [200 160 900  550];
+
+exportgraphics(gcf,'output/19092022/self_comparison_15min_THR_214.pdf','ContentType','vector');
+
+
+%% PLOT SELF TRIGGER 19/09: single detectors
+
+clear; clc;
+fontsize = 12;
+colors = distinguishable_colors(5, 'w');
+
+data0 = readtable('input/muons/19092022/selfTrigger_sens0_THR_214_30min.txt');
+data0 = table2array(data0);
+
+data1 = readtable('input/muons/19092022/selfTrigger_sens1_THR_214_30min.txt');
+data1 = table2array(data1);
+
+data2 = readtable('input/muons/19092022/selfTrigger_sens2_THR_214_30min.txt');
+data2 = table2array(data2);
+
+data3 = readtable('input/muons/19092022/selfTrigger_sens3_THR_214_30min.txt');
+data3 = table2array(data3);
+
+f = figure('Visible', 'on');    
+
+hold on
+h1 = histogram(data0(:, 7), 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)])
+h2 = histogram(data1(:, 7), 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)])
+h3 = histogram(data2(:, 7), 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(3, 1), colors(3, 2), colors(3, 3)])
+h4 = histogram(data3(:, 7), 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(4, 1), colors(4, 2), colors(4, 3)])
+
+legend([h1 h2 h3 h4], "Self trigger: detector \#0", "Self trigger: detector \#1", "Self trigger: detector \#2", "Self trigger: detector \#3")
+
+grid on
+box on
+set(gca, 'YScale', 'log')
+xlabel('Energy [ADU]')
+ylabel('Counts')
+xlim([0 2047])
+%ylim([0.9 1000000])
+%yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$" "$10^{7}$"])
+
+ax = gca; 
+ax.XAxis.FontSize = fontsize; 
+ax.YAxis.FontSize = fontsize; 
+ax.Legend.FontSize = fontsize;
+f.Position = [200 160 900  550];
+
+exportgraphics(gcf,'output/19092022/self_single-detectors_15min_THR_214.pdf','ContentType','vector');
+

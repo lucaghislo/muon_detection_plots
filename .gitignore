@@ -2,3 +2,8 @@
 input/selfTrigger_THR_analysis
 input/test_americio
 input/muons/19092022/selfTrigger_sens0_THR_214_30min.txt
+input/muons/19092022/selfTrigger_30chs_THR_214_30min.txt
+input/muons/19092022/selfTrigger_allch_THR_214_30min.txt
+input/muons/19092022/selfTrigger_sens1_THR_214_30min.txt
+input/muons/19092022/selfTrigger_sens2_THR_214_30min.txt
+input/muons/19092022/selfTrigger_sens3_THR_214_30min.txt
