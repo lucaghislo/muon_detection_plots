@@ -79,7 +79,7 @@ if shift
 end
 % bar(intervalli,h);
 if (noplot==0)
-    stairs(intervalli,h,'k','LineWidth',1, 'Color', [colors(4, 1), colors(4, 2), colors(4, 3)], 'LineWidth',1);
+    stairs(intervalli,h,'k','LineWidth',0.7, 'Color', [colors(4, 1), colors(4, 2), colors(4, 3)], 'LineWidth',0.7);
 end;
 if nargout
     h=h(:);

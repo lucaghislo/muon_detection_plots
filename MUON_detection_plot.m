@@ -12,6 +12,17 @@ for i = 1:length(index_interpreter)
     set(groot, default_name,'latex');
 end
 
+% definie new scale for X axis
+a = 2283.9; % m1
+b = 1246;   % m2
+c = 1.8426; % m3
+d = 1.7665; % m4
+
+% conversione ADU -> keV
+% convertire prima ADU -> V tramite coefficiente 1.76e-3
+% convertire poi in V -> keV
+% 0.5*(a*data_noZS_volt(i) + b*log(cosh(c*(data_noZS_volt(i)-d))/cosh(c*d)))/0.044;
+
 
 %% PLOT TUTTI I CANALI SINGOLARMENTE (sensore di interesse in rosso)
 
@@ -25,14 +36,20 @@ for ch = 0:31
     
     % external trigger delay 34
     data2 = readtable("input\muons\Run_11_08_2022_11.29.16_2hr_ext_34.txt");
+
+    data2_volt = 1.76e-3*data2.Energy_ADC_(data2.Channel==ch);
+
+    for i=1:size(data2_volt)
+        data2_plot(i) = 0.5*(a*data2_volt(i) + b*log(cosh(c*(data2_volt(i)-d))/cosh(c*d)))/0.044;
+    end
     
     %nexttile
     %h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1);
 
     if ch>15 && ch<24
-        h2 = histogram(data2.Energy_ADC_(data2.Channel==ch), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+        h2 = histogram(data2_plot, 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
     else
-        h2 = histogram(data2.Energy_ADC_(data2.Channel==ch), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+        h2 = histogram(data2_plot, 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
     end
 
     %h3 = histogram(data2.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'BinWidth', 10);
@@ -44,8 +61,8 @@ for ch = 0:31
     set(gca, 'YScale', 'log')
     set(gca,'YMinorGrid','on')
     set(gca,'YGrid','on')
-    xlim([0 1000])
-    ylim([1 1000])
+    xlim([-100 3000])
+    %ylim([1 1000])
     %xlabel('Energy [ADU]')
     %ylabel('Counts')
     
@@ -54,7 +71,7 @@ for ch = 0:31
     ax.YAxis.FontSize = fontsize; 
     %f.Position = [0 0 2160 4096*10];
 
-    exportgraphics(gcf,['output/incoming_energy_32channels_34_2hr_', num2str(ch),'.pdf'],'ContentType','vector');
+    exportgraphics(gcf,['output/incoming_energy_32channels_34_2hr_', num2str(ch),'_keV.pdf'],'ContentType','vector');
 end
 
 %exportgraphics(gcf,'output/incoming_energy_32channels_34_2hr.pdf','ContentType','vector');
@@ -72,10 +89,16 @@ for sens = 1:4
     % external trigger delay 34
     data2 = readtable("input\muons\Run_11_08_2022_11.29.16_2hr_ext_34.txt");
 
+    data_volt = 1.76e-3*data2.Energy_ADC_(data2.Channel>channels_inizio(sens) & data2.Channel<channels_fine(sens));
+
+    for i = 1:size(data_volt)
+        data_plot(i) = 0.5*(a*data_volt(i) + b*log(cosh(c*(data_volt(i)-d))/cosh(c*d)))/0.044;
+    end
+
     if sens == 3
-        h2 = histogram(data2.Energy_ADC_(data2.Channel>channels_inizio(sens) & data2.Channel<channels_fine(sens)), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+        h2 = histogram(data_plot, 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
     else
-        h2 = histogram(data2.Energy_ADC_(data2.Channel>channels_inizio(sens) & data2.Channel<channels_fine(sens)), 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+        h2 = histogram(data_plot, 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
     end
 
     box on
@@ -84,19 +107,20 @@ for sens = 1:4
     set(gca, 'YScale', 'log')
     set(gca,'YMinorGrid','on')
     set(gca,'YGrid','on')
-    xlim([0 1000]) % [0 2000]
-    ylim([0.9 2000])
-    xlabel('Energy [ADU]')
+    xlim([-100 2000]) % [0 2000]
+    %ylim([0.9 2000])
+    xlabel('Energy [keV]')
     ylabel('Counts')
     yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$"])
     
     ax = gca; 
     ax.XAxis.FontSize = fontsize; 
     ax.YAxis.FontSize = fontsize; 
-    f.Position = [0 0 400 600];
+    f.Position = [0 0 800 600];
 
-    exportgraphics(gcf,['output/incoming_energy34_2hr_sens', num2str(sens),'_half.pdf'],'ContentType','vector');
+    exportgraphics(gcf,['output/incoming_energy34_2hr_sens', num2str(sens),'_keV.pdf'],'ContentType','vector');
     %print(f, ['output/incoming_energy34_2hr_sens', num2str(sens)],'-dsvg')
+    writematrix(data2.Energy_ADC_(data2.Channel>channels_inizio(sens) & data2.Channel<channels_fine(sens)), ['output/dati_elisa/incoming_energy34_2hr_sens', num2str(sens), '_half.dat'])
 end
 
 
@@ -416,36 +440,46 @@ data1 = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_self_130.txt');
 data_noise_suppr = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_self_130_ZS.txt');
 colors = distinguishable_colors(4, 'w');
 
+data_noZS_raw = 1.76e-3*data1.Energy_ADC_;
+for i=1:size(data_noZS_raw)
+    data_noZS(i) = 0.5*(a*data_noZS_raw(i) + b*log(cosh(c*(data_noZS_raw(i)-d))/cosh(c*d)))/0.044; 
+end
+
+data_ZS_raw = 1.76e-3*data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5);
+for i=1:size(data_ZS_raw)
+    data_ZS(i) = 0.5*(a*data_ZS_raw(i) + b*log(cosh(c*(data_ZS_raw(i)-d))/cosh(c*d)))/0.044;
+end
+
 f = figure('Visible', 'on');
 hold on
 dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
 dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
-h1 = histogram(data1.Energy_ADC_, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'BinWidth', 10, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-h2 = histogram(data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5), 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
-%histfitlandau(data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5),10,0,1500)
-
+%h1 = histogram(data_noZS, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'BinWidth', 30, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]); % data1.Energy_ADC_
+%h2 = histogram(data_ZS, 'DisplayStyle', 'stairs', 'BinWidth', 30,'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]); % data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5)
+histfitlandau(data_ZS,10,0,6000)
 hold off
 
 box on
 grid on
-legend([dummy1 dummy2], "Without zero suppression", " With zero suppression")
-set(gca, 'YScale', 'log')
+%legend([dummy1 dummy2], "Without zero suppression", " With zero suppression")
+%set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
-xlim([0 2000])
+%xlim([-100 6000])
 %ylim([0.5 10000])
-ylim([0.9 100000])
-xlabel('Energy [ADU]')
+%ylim([0.9 1000000])
+xlabel('Energy [keV]')
 ylabel('Counts')
-yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$"])
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$"])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
-ax.Legend.FontSize = fontsize;
+%ax.Legend.FontSize = fontsize;
 f.Position = [200 160 900  550];
 %exportgraphics(gcf,'output/incoming_energy_thr130_ZS_landau.pdf','ContentType','vector');
-exportgraphics(gcf,'output/incoming_energy_zero_suppr_thr130.pdf','ContentType','vector');
+exportgraphics(gcf,'output/incoming_energy_thr130_ZS_landau_keV.pdf','ContentType','vector');
+writematrix([data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5)], 'output/dati_elisa/incoming_energy_zero_suppr_thr130_ZS.dat')
 
 
 %% DIFFERENT DELAYS
@@ -701,7 +735,17 @@ fontsize = 12;
 
 % external trigger delay 39
 data1 = readtable('input/muons/31082022/self_trigger_1hr_THR_130_pt4_34.txt');
-data2 = readtable('input/muons/31082022/ext_trigger_1hr_THR_130_pt4_34.txt'); 
+data2 = readtable('input/muons/Run_11_08_2022_11.29.16_1hr_ext_34.txt');  % 31082022/ext_trigger_1hr_THR_130_pt4_34.txt
+
+data1_volt = 1.76e-3*data1.Energy_ADC_(data2.Channel>=16 & data2.Channel<=23);
+for i=1:size(data1_volt)
+    data1_plot(i) = 0.5*(a*data1_volt(i) + b*log(cosh(c*(data1_volt(i)-d))/cosh(c*d)))/0.044;
+end
+
+data2_volt = 1.76e-3*data2.Energy_ADC_(data2.Channel>=16 & data2.Channel<=23);
+for i=1:size(data1_volt)
+    data2_plot(i) = 0.5*(a*data2_volt(i) + b*log(cosh(c*(data2_volt(i)-d))/cosh(c*d)))/0.044;
+end
 
 colors = distinguishable_colors(10, 'w');
 f = figure('Visible', 'on');
@@ -710,8 +754,8 @@ hold on
 dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), colors(1, 3)]);
 dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(5, 1), colors(5, 2), colors(5, 3)]);
 
-h1 = histogram(data1.Energy_ADC_(data2.Channel>=0 & data2.Channel<=7), 'DisplayStyle', 'stairs', 'BinWidth', 10, 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
-h2 = histogram(data2.Energy_ADC_(data2.Channel>=0 & data2.Channel<=7), 'DisplayStyle', 'stairs', 'BinWidth', 10,'LineWidth', 1, 'EdgeColor', [colors(5, 1), colors(5, 2), colors(5, 3)]);
+h1 = histogram(data1_plot, 'DisplayStyle', 'stairs', 'BinWidth', 30, 'LineWidth', 1, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+h2 = histogram(data2_plot, 'DisplayStyle', 'stairs', 'BinWidth', 30,'LineWidth', 1, 'EdgeColor', [colors(5, 1), colors(5, 2), colors(5, 3)]);
 hold off
 
 box on
@@ -720,19 +764,21 @@ legend([dummy2 dummy1], "External trigger", "Self trigger")
 set(gca, 'YScale', 'log')
 set(gca,'YMinorGrid','on')
 set(gca,'YGrid','on')
-xlim([0 2000])
-ylim([0.9 10000])
-xlabel('Energy [ADU]')
+xlim([-100 3000])
+ylim([0.9 100000])
+xlabel('Energy [keV]')
 ylabel('Counts')
-yticks([1 10 100 1000 10000])
-yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$"])
+yticks([1 10 100 1000 10000 100000])
+yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$"])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
 ax.YAxis.FontSize = fontsize; 
-ax.Legend.FontSize = fontsize;
+ax.Legend.FontSize = fontsize; 
 f.Position = [200 160 900  550];
-exportgraphics(gcf,'output/ext_self_muons_THR_130_delay_34_ch0-7.pdf','ContentType','vector');
+exportgraphics(gcf,'output/incoming_energy_external34_self_100_keV','ContentType','vector'); % ext_self_muons_THR_130_delay_34_ch0-7_keV.pdf
+writematrix(data1.Energy_ADC_(data1.Channel>=0 & data1.Channel<=7), 'output/dati_elisa/ext_self_muons_THR_130_delay_34_ch0-7_SELF.dat')
+writematrix(data2.Energy_ADC_(data2.Channel>=0 & data2.Channel<=7), 'output/dati_elisa/ext_self_muons_THR_130_delay_34_ch0-7_EXT.dat')
 
 
 %% AMERICIO THR = 214 sotto Ch. 0-7
