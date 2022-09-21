@@ -35,9 +35,9 @@ for ch = 0:31
     data1 = readtable("input\muons\Run_10_08_2022_13.07.48_1hr_self.txt");
     
     % external trigger delay 34
-    data1 = readtable("input\muons\Run_11_08_2022_11.29.16_2hr_ext_34.txt");
+    data2 = readtable("input\muons\Run_11_08_2022_11.29.16_2hr_ext_34.txt");
 
-    data2_volt = 1.76e-3*data1.Energy_ADC_(data1.Channel==ch);
+    data2_volt = 1.76e-3*data2.Energy_ADC_(data2.Channel==ch);
 
     for i=1:size(data2_volt)
         data2_plot(i) = 0.5*(a*data2_volt(i) + b*log(cosh(c*(data2_volt(i)-d))/cosh(c*d)))/0.044;
@@ -61,11 +61,10 @@ for ch = 0:31
     set(gca, 'YScale', 'log')
     set(gca,'YMinorGrid','on')
     set(gca,'YGrid','on')
-    xlim([-100 1500])
-    ylim([0.9 10000])
-    %xlabel('Energy [keV]')
+    xlim([-100 3000])
+    %ylim([1 1000])
+    %xlabel('Energy [ADU]')
     %ylabel('Counts')
-    yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$"])
     
     ax = gca; 
     ax.XAxis.FontSize = fontsize; 
