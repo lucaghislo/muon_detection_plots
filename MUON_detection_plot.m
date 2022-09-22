@@ -457,7 +457,7 @@ dummy1 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(1, 1), colors(1, 2), co
 dummy2 = plot(nan, nan, 'LineWidth', 1, 'Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
 %h1 = histogram(data_noZS, 'DisplayStyle', 'stairs', 'LineWidth', 1, 'BinWidth', 30, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]); % data1.Energy_ADC_
 %h2 = histogram(data_ZS, 'DisplayStyle', 'stairs', 'BinWidth', 30,'LineWidth', 1, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]); % data_noise_suppr.Energy_ADC_(data_noise_suppr.Energy_ADC_>5)
-histfitlandau(data_ZS,10,0,6000)
+histfitlandau(data_ZS,15,0,4000)
 hold off
 
 box on
@@ -471,7 +471,7 @@ set(gca,'YGrid','on')
 %ylim([0.9 1000000])
 xlabel('Energy [keV]')
 ylabel('Counts')
-yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$"])
+%yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$" "$10^{5}$" "$10^{6}$"])
 
 ax = gca; 
 ax.XAxis.FontSize = fontsize; 
