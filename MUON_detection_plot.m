@@ -1,5 +1,3 @@
-%% FDT PLOT
-
 clear; clc;
 
 fontsize = 12;
@@ -96,30 +94,33 @@ for sens = 1:4
         data_plot(i) = 0.5*(a*data_volt(i) + b*log(cosh(c*(data_volt(i)-d))/cosh(c*d)))/0.044;
     end
 
+    data_plot = data_plot(data_plot>20);
+
     if sens == 3
-        h2 = histogram(data_plot, 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+        h2 = histogram(data_plot, 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 25, 'EdgeColor', [colors(2, 1), colors(2, 2), colors(2, 3)]);
+        %histfitlandau(data_plot,20,0,2000)
     else
-        h2 = histogram(data_plot, 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 10, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
+        h2 = histogram(data_plot, 'DisplayStyle', 'stairs', 'LineWidth', 0.7, 'BinWidth', 25, 'EdgeColor', [colors(1, 1), colors(1, 2), colors(1, 3)]);
     end
 
     box on
     grid on
     title(['\textbf{Detector ', num2str(sens-1), ' (Channels ', num2str(channels_inizio(sens)) ,' - ', num2str(channels_fine(sens)),')}'])
-    set(gca, 'YScale', 'log')
+    %set(gca, 'YScale', 'log')
     set(gca,'YMinorGrid','on')
     set(gca,'YGrid','on')
-    xlim([-100 2000]) % [0 2000]
-    %ylim([0.9 2000])
+    xlim([0 2000]) % [-100 2000]
+    ylim([0 25]) % [0.9 2000]
     xlabel('Energy [keV]')
     ylabel('Counts')
-    yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$"])
+    %yticklabels([1 10 "$10^{2}$" "$10^{3}$" "$10^{4}$"])
     
     ax = gca; 
     ax.XAxis.FontSize = fontsize; 
     ax.YAxis.FontSize = fontsize; 
     f.Position = [0 0 800 600];
 
-    exportgraphics(gcf,['output/incoming_energy34_2hr_sens', num2str(sens),'_keV.pdf'],'ContentType','vector');
+    exportgraphics(gcf,['output/incoming_energy34_2hr_sens', num2str(sens),'_keV_lin.pdf'],'ContentType','vector');
     %print(f, ['output/incoming_energy34_2hr_sens', num2str(sens)],'-dsvg')
     writematrix(data2.Energy_ADC_(data2.Channel>channels_inizio(sens) & data2.Channel<channels_fine(sens)), ['output/dati_elisa/incoming_energy34_2hr_sens', num2str(sens), '_half.dat'])
 end
