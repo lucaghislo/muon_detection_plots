@@ -58,7 +58,7 @@ fitres=fit(x,y,ftype,'StartPoint',[a0 mpv0 sigma0]);
 bound=confint(fitres);
 xfit=x(1):(passo/10):x(end);
 yfit=fitres(xfit);
-line(xfit,yfit,'LineWidth',2,'LineStyle','-','Color', [colors(3, 1), colors(3, 2), colors(3, 3)]);
+line(xfit,yfit,'LineWidth',2,'LineStyle','-','Color', [colors(2, 1), colors(2, 2), colors(2, 3)]);
 picco=max(yfit);
 mpv=xfit(find(yfit==picco));
 mpv=mpv(end);
